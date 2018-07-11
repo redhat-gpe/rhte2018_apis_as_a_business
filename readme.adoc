@@ -1,0 +1,10 @@
+= APIs as a Business Multi-Product Lab
+
+== Related session(s) at RHT Tech Exchange
+
+. Agile Integration Implementation
+.. Description
++
+ This session will talk about how Red Hat’s OpenShift, Fuse and 3scale technologies combine to deliver on the vision. The content will cover how containerized workloads can be converted into APIs and easily integrated into new types of applications. We will also provide information on automation and how deployments can be architected for large scale deployment. 
+.. Duration:  1 hour
+.. Speakers:  TBD
