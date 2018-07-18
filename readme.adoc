@@ -8,3 +8,20 @@
  This session will talk about how Red Hat’s OpenShift, Fuse and 3scale technologies combine to deliver on the vision. The content will cover how containerized workloads can be converted into APIs and easily integrated into new types of applications. We will also provide information on automation and how deployments can be architected for large scale deployment. 
 .. Duration:  1 hour
 .. Speakers:  TBD
+
+== Infrastructure
+
+
+1)  1 3scale multitenant environment
+       - pre-configured with 1 tenant per student where each userId is the admin for that tenant
+       - pre-configured (or provide a script) with API endpoints proxies and applications per tenant
+
+2)  1 Apicurio
+       - Use oauth-proxy for authentication
+
+3)  1 OCP project per student
+        a)  MicRocks :  backend services  (possibly multi-tenant) 
+        b)  nodejs :     insurance quote frontend
+        c)  Fuse Online  (using its existing AMQ broker )
+
+4)  Optional:   1 central Gogs
