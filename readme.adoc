@@ -12,16 +12,16 @@
 == Infrastructure
 
 
-1)  1 3scale multitenant environment
-       - pre-configured with 1 tenant per student where each userId is the admin for that tenant
-       - pre-configured (or provide a script) with API endpoints proxies and applications per tenant
+. 1 3scale multitenant environment
+.. pre-configured with 1 tenant per student where each userId is the admin for that tenant
+.. pre-configured (or provide a script) with API endpoints proxies and applications per tenant
 
-2)  1 Apicurio
-       - Use oauth-proxy for authentication
+. 1 Apicurio
+.. Use oauth-proxy for authentication
 
-3)  1 OCP project per student
-        a)  MicRocks :  backend services  (possibly multi-tenant) 
-        b)  nodejs :     insurance quote frontend
-        c)  Fuse Online  (using its existing AMQ broker )
+. 1 OCP project per student
+.. MicRocks :  backend services  (possibly multi-tenant) 
+.. nodejs :     insurance quote frontend
+.. Fuse Online  (using its existing AMQ broker )
 
-4)  Optional:   1 central Gogs
+. Optional:   1 central Gogs
