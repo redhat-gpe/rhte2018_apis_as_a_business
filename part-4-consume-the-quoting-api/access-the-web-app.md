@@ -13,7 +13,7 @@
 
 * Copy one of the Ids.
 
-![](/assets/quoteapp-copymicrocksid.png)
+![](/images/quoteapp-copymicrocksid.png)
 
 * Close the tab.
 
@@ -23,7 +23,7 @@
 
 * Complete the form with any data of your choosing.
 
-![](/assets/quote-app-form.png)
+![](/images/quote-app-form.png)
 
 * Click on the **Get Quote** button.
 
