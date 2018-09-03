@@ -4,7 +4,7 @@
 
 . Agile Integration Implementation
 .. Description
-+
+
  This session will talk about how Red Hat’s OpenShift, Fuse and 3scale technologies combine to deliver on the vision. The content will cover how containerized workloads can be converted into APIs and easily integrated into new types of applications. We will also provide information on automation and how deployments can be architected for large scale deployment. 
 .. Duration:  1 hour
 .. Speakers:  TBD
@@ -26,4 +26,4 @@ https://etherpad.net/p/RHTE-APIs-a-Biz
 .. Fuse Online  (using its existing AMQ broker )
 
 . Optional:   1 central Gogs
->>>>>>> 91f4462a04be99e0631fb43a4887ca60304e9ea7
+
