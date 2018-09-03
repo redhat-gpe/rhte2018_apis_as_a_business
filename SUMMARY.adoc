@@ -1,0 +1,18 @@
+# Summary
+
+* link:README.adoc[Introduction]
+* link:setup.adoc[Setup]
+* link:part-1-create-a-mock-api.adoc[Part 1 - Create a Mock API]
+** link:modules/part-1-create-a-mock-api/create-the-traffic-violations-mock-api.adoc[Create the Traffic Violations Mock API]
+** link:modules/part-1-create-a-mock-api/modify-the-swagger-doc.adoc[Modify the Swagger doc]
+* link:part-2-create-an-insurance-quoting-api.adoc[Part 2 - Create an Insurance Quoting API]
+** link:modules/part-2-create-an-insurance-quoting-api/import-required-extensions.adoc[Import required Extensions]
+** link:modules/part-2-create-an-insurance-quoting-api/create-an-api-connector-for-traffic-violations.adoc[Create the API Connectors]
+** link:modules/part-2-create-an-insurance-quoting-api/create-an-integration.adoc[Create an Integration]
+* link:part-3-expose-the-quoting-api.adoc[Part 3 - Publish the Quoting API]
+** link:modules/part-3-expose-the-quoting-api/setup-rh-sso.adoc[Setup RH-SSO]
+** link:modules/part-3-expose-the-quoting-api/create-an-api.adoc[Create the API]
+* link:part-4-consume-the-quoting-api.adoc[Part 4 - Consume the Quoting API]
+** link:modules/part-4-consume-the-quoting-api/deploy-the-web-app.adoc[Deploy the Web App]
+** link:modules/part-4-consume-the-quoting-api/access-the-web-app.adoc[Test the Web App]
+

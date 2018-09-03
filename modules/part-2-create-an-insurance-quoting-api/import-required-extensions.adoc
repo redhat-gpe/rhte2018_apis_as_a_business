@@ -1,26 +1,26 @@
 ## Import Extensions
 
-* Go to [http://syndesis-fuse.REPLACE\_SUFFIX](http://syndesis-fuse.REPLACE_SUFFIX)
+* Go to http://syndesis-fuse.REPLACE_SUFFIX
 * Login as admin/r3dh4t1!
 * Click on the **Customizations** tab.
 * click on the **Extensions** tab.
 * Click on the **Import Extension** button.
-
-![](/images/ignite-Extensions.png)
++
+image::images/ignite-Extensions.png[]
 
 * Select the **Labs\files\syndesis-extension-setbodyjs-1.0.0.jar **file.
 * Click on the **Import Extension **button.
-
-![](/images/ignite-ImportExtension.png)
++
+image::images/ignite-ImportExtension.png[]
 
 * Repeat these steps for the following extensions:
 
-  * syndesis-connector-datashape-1.0.0.jar
-  * syndesis-extension-script-1.0.0.jar
-  * syndesis-extension-manage-headers-1.0.0.jar
-  * syndesis-connector-webhook-1.0.0.jar
-
-  ![](/images/ignite-ImportedExtensions.png)
+** syndesis-connector-datashape-1.0.0.jar
+** syndesis-extension-script-1.0.0.jar
+** syndesis-extension-manage-headers-1.0.0.jar
+** syndesis-connector-webhook-1.0.0.jar
++
+image::images/ignite-ImportedExtensions.png[]
 
 * Click on the **Connections** tab.
 
@@ -29,8 +29,8 @@
 * Select ** DataShape Connector**.
 * Enter **DataShape** as **Connection Name**.
 * Click on the **Create** button.
-
-![](/images/ignite-CreateDataShapeConnection.png)
++
+image::images/ignite-CreateDataShapeConnection.png[]
 
 * Click on the **Create Connection** button.
 
