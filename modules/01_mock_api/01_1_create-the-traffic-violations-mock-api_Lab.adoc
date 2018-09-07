@@ -25,7 +25,6 @@ image::images/microcks-add-dyn-service.png[]
 * After ~1min a new **Driver Service** should appear in the **Service List.**
 * Open a terminal and execute the following commands:
 +
-[source,text]
 -----
 curl -X POST \
   http://microcks.REPLACE_SUFFIX/dynarest/Driver%20Service/1.0/Driver/ \

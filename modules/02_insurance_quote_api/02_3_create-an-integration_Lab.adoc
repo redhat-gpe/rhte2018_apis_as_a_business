@@ -32,7 +32,6 @@ image::images/ignite-DefineWebhookDatashape.png[]
 
 * Enter the following in the **Definition** field:
 +
-[source,text]
 -----
 { "price": 123 }
 -----
@@ -47,7 +46,6 @@ image::images/ignite-CreateDataShapeDefinitio.png[]
 * Select ** Set Body JS.**
 * Enter the following as **Body:**
 +
-[source,text]
 -----
 '{"parameters":{"id": "' + JSON.parse(exchange.in.getBody(java.lang.String.class)).driver.id + '"}}'
 -----
@@ -155,7 +153,6 @@ image::images/ignite-IntegrationAddRemoveHeaderStep.png[]
 
 * Enter the following code as **Script:**
 +
-[source,text]
 -----
 var obj = JSON.parse(body);
 var fire = {"fire-all-rules": {}};
@@ -177,7 +174,6 @@ exchange.out.body =JSON.stringify(obj);
 
 * Execute the following commands:
 +
-[source,text]
 -----
 oc login https://master.REPLACE_SUFFIX:8443
 oc project ignite
