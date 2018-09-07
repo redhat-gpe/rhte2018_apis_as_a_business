@@ -38,10 +38,7 @@ image::Deployment_Diagram.png[]
 . Lab specific cluster
 . Seeded with user1-99 identities
 . Ansible playbook and scripts for automated deployment.
-
-
-Order of Deployment:
-
++
 .Env Variables:
 |=======================
   | Variable | Value | Remarks
@@ -53,9 +50,9 @@ Order of Deployment:
   | PROJECT_NAME_NODEJS | userX-client | Project for each user's client Node JS application
   | PROJECT_NAME_SSO | userX-sso |  Project for each user's SSO application
 |=======================
-
-.Commands:
-[source,text]
++
+. Commands:
++
 -----
 # Replace with lab GUID value
 GUID=xxxx
@@ -74,8 +71,9 @@ PROJECT_NAME_SSO$seq
 
 ----- 
 
+=== Application Deployments
 
-Following shows the application deployments:
+The following applications need to be deployed to the OCP cluster.
 
 ==== Red Hat 3scale (Multi-tenant):
 
@@ -101,8 +99,8 @@ https://github.com/sborenst/ansible_agnostic_deployer/tree/development/ansible/r
   | CREATE_GWS_WITH_EACH_TENANT | true | create default stage & prod routes for each tenant gateway.
 |=======================
 +
-.Commands:
-[source,text]
+. Commands:
++
 -----
 
 # valid values:  "tenants"
@@ -152,8 +150,8 @@ ansible-playbook -i localhost, -c local ./configs/ocp-workloads/ocp-workload.yml
   | HOSTNAME_HTTP | http://sso-$PROJECT_NAME}.apps.${GUID}.rhte.opentlc.com | Value will be http://sso-${PROJECT_NAME}.apps.${GUID}.rhte.opentlc.com
 |=======================
 +
-.Commands:
-[source,text]
+. Commands:
++
 -----
 
 SSO_ADMIN_USERNAME=admin
@@ -180,8 +178,8 @@ oc new-app --template=sso72-mysql-persistent --param=SSO_ADMIN_USERNAME=$SSO_ADM
   | OPENSHIFT_OAUTH_CLIENT_NAME | laboauth        | OAuthclient to use for Openshift IDP with SSO
 |=======================
 +
-.Commands
-[source,text]
+. Commands
++
 -----
 
 OPENSHIFT_MASTER=https://master.${GUID}.rhte.opentlc.com:443
@@ -201,8 +199,8 @@ oc process -f https://raw.githubusercontent.com/gpe-mw-training/rhte-api-as-busi
 . Template: https://github.com/gpe-mw-training/rhte-api-as-business-labs/blob/master/templates/sso71-mysql-persistent_with_limit.yaml
 . Realm: https://github.com/gpe-mw-training/rhte-api-as-business-labs/blob/master/templates/sso/3scale_realm.json
 +
-.Commands:
-[source,text]
+. Commands:
++
 -----
 
 # To run in a loop, once for each student
@@ -234,8 +232,8 @@ oc new-app --template=sso71-mysql-persistent --param=SSO_ADMIN_USERNAME=$SSO_ADM
   | AUTH_ROUTE  | $HOSTNAME_HTTP/auth | URL of the SSO server
 |=======================
 +
-.Commands:
-[source,text]
+. Commands:
++
 -----
 
 
@@ -264,8 +262,8 @@ oc new-app --template=apicurio-studio --param=GUID=$GUID --param=AUTH_ROUTE=$HOS
   | KEYCLOAK_ROUTE_HOSTNAME  | $HOSTNAME_HTTP/auth | URL of the SSO server
 |=======================
 +
-.Commands:
-[source,text]
+. Commands:
++
 -----
 
 KEYCLOAK_ROUTE_HOSTNAME=$HOSTNAME_HTTP
@@ -301,8 +299,8 @@ NOTE: Replaced fuse-s2i image stream with the release from Pable (quay.io/pszust
   | QUOTES_SECRET  | TBD | Client secret for OAuth in 3scale 
 |=======================
 +
-.Commands
-[source,text]
+. Commands
++
 -----
 # To run in a loop, once for each student
 
@@ -344,8 +342,8 @@ NOTE: Cluster Quota for secrets & service accounts needs to be configured based 
   | CONTEXT_DIR | services/InsuranceQuoting | Source code folder in git repo
 |=======================
 +
-.Commands
-[source,text]
+. Commands
++
 -----
 # Deploy one instance to be used by all students   
 
@@ -389,8 +387,8 @@ IMPORTANT: This application is to be installed manually by the student during th
   | QUOTES_SECRET  | TBD | Client secret for OAuth in 3scale 
 |=======================
 +
-.Commands:
-[source,text]
+. Commands:
++
 -----
 
 oc create -f https://raw.githubusercontent.com/gpe-mw-training/rhte-api-as-business-labs/master/templates/nodejs-quoting-app-template.json -n openshift

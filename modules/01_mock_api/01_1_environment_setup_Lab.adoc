@@ -79,7 +79,7 @@ echo "export OCP_DOMAIN=\$OCP_REGION.rhte.opentlc.com" >> ~/.bashrc
 source ~/.bashrc
 
 -----
-+
+
 NOTE: Your userid will have the same number as your assigned lab number. For instance, if your lab number is 24, your userid is *user24* to login to OCP.
 
 == OpenShift Container Platform
