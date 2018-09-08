@@ -42,7 +42,8 @@ image::Deployment_Diagram.png[]
 .Env Variables:
 |=======================
   | Variable | Value | Remarks
-  | GUID | TBD | GUID of the server to be provided.
+  | REGION | TBD | GUID of the server to be provided.
+  | OCP_DOMAIN |  $REGION.rhte.opentlc.com | 
   | PROJECT_NAME_INFRA | lab-infra       | Project for deploying multitenant apps  (SSO, Microcks & Apicurio) (User: user100)
   | PROJECT_NAME_3SCALE | 3scale-mt-adm0 | Project for deploying multi-tenant 3scale (User: user102)
   | PROJECT_NAME_RHDM | rhdm | Project for deploying common instance of Decision Manager (User: user101)
@@ -70,10 +71,14 @@ PROJECT_NAME_NODEJS$seq
 PROJECT_NAME_SSO$seq
 
 ----- 
++
+NOTE: Cluster Quota for secrets & service accounts needs to be configured based on number of projects running in the cluster. Rough estimate is 9 x No. of Projects + any custom secrets
+
+
 
 === Application Deployments
 
-The following applications need to be deployed to the OCP cluster.
+The following applications need to be deployed to the OCP cluster. Login as `opentlc-mgr` (user with admin access) to deploy.
 
 ==== Red Hat 3scale (Multi-tenant):
 
@@ -103,8 +108,8 @@ https://github.com/sborenst/ansible_agnostic_deployer/tree/development/ansible/r
 +
 -----
 
-# valid values:  "tenants"
-TAGS=tenants
+# valid values:  "tenants" or "all"
+TAGS=all
 
 # Tenant related variables
 START_TENANT=1
@@ -114,7 +119,7 @@ CREATE_GWS_WITH_EACH_TENANT=true
 
 WORKLOAD="ocp-workload-3scale-multitenant"
 REGION=`oc whoami --show-server | cut -d'.' -f 2`
-OCP_DOMAIN=$REGION.openshift.opentlc.com
+OCP_DOMAIN=$REGION.rhte.opentlc.com
 GUID=adm0
 
 
@@ -129,7 +134,8 @@ ansible-playbook -i localhost, -c local ./configs/ocp-workloads/ocp-workload.yml
                     -e"create_gws_with_each_tenant=$CREATE_GWS_WITH_EACH_TENANT" \
                     -t $TAGS
 ----- 
-
++
+NOTE: The Staging & Production pods created in the userX-gw namespace are paused by default. Students need to start the pods in the set up instructions.
 
 
 ==== Red Hat Single Sign On (Multi-tenant):
@@ -138,7 +144,7 @@ ansible-playbook -i localhost, -c local ./configs/ocp-workloads/ocp-workload.yml
 . Provide OAuth clients for apicurio & microcks
 . Provide OpenShift Identity Provider 
 . Template with required Images, realms & oauth clients:
-.. SSO Template: https://raw.githubusercontent.com/jboss-openshift/application-templates/ose-v1.4.9/sso/sso72-mysql-persistent.json
+.. SSO Template: https://raw.githubusercontent.com/jboss-openshift/application-templates/ose-v1.4.9/sso/sso72-x509-mysql-persistent.json
 +
 .Parameters:
 [options="header"]
@@ -147,7 +153,8 @@ ansible-playbook -i localhost, -c local ./configs/ocp-workloads/ocp-workload.yml
   | SSO_ADMIN_USERNAME | admin | To be provided in the new-app command
   | SSO_ADMIN_PASSWORD | password | To be provided in the new-app command
   | APPLICATION_NAME | sso | Default
-  | HOSTNAME_HTTP | http://sso-$PROJECT_NAME}.apps.${GUID}.rhte.opentlc.com | Value will be http://sso-${PROJECT_NAME}.apps.${GUID}.rhte.opentlc.com
+  | SSO_HOSTNAME_HTTP | sso-unecured.apps.$DOMAIN
+  | SSO_HOSTNAME_HTTPS | sso.apps.$DOMAIN
 |=======================
 +
 . Commands:
@@ -156,65 +163,25 @@ ansible-playbook -i localhost, -c local ./configs/ocp-workloads/ocp-workload.yml
 
 SSO_ADMIN_USERNAME=admin
 SSO_ADMIN_PASSWORD=password
-HOSTNAME_HTTP=http://sso-${PROJECT_NAME_INFRA}.apps.${GUID}.rhte.opentlc.com
+SSO_HOSTNAME_HTTP=sso-unsecured.apps.${DOMAIN}
+SSO_HOSTNAME_HTTPS=sso.apps.${DOMAIN}
+
+oc project $PROJECT_NAME_INFRA
 
 oc create serviceaccount sso-service-account
-oc policy add-role-to-user view system:serviceaccount:rh-sso:sso-service-account
-oc create -f https://raw.githubusercontent.com/jboss-openshift/application-templates/ose-v1.4.9/sso/sso72-mysql-persistent.json -n openshift
-oc new-app --template=sso72-mysql-persistent --param=SSO_ADMIN_USERNAME=$SSO_ADMIN_USERNAME --param=SSO_ADMIN_PASSWORD=$SSO_ADMIN_PASSWORD --param=HOSTNAME_HTTP=$HOSTNAME_HTTP
+oc policy add-role-to-user view system:serviceaccount:$PROJECT_NAME_INFRA:sso-service-account
+
+
+# Should exist by default
+oc create -f https://raw.githubusercontent.com/gpe-mw-training/rhte-api-as-business-labs/master/templates/sso72-x509-mysql-persistent.json -n openshift
+oc new-app --template=sso72-x509-mysql-persistent --param=SSO_ADMIN_USERNAME=$SSO_ADMIN_USERNAME --param=SSO_ADMIN_PASSWORD=$SSO_ADMIN_PASSWORD  --param=HOSTNAME_HTTP=$SSO_HOSTNAME_HTTP -param=HOSTNAME_HTTPS=$SSO_HOSTNAME_HTTPS
 
 ----- 
-
-.. SSO Realms: https://github.com/gpe-mw-training/rhte-api-as-business-labs/blob/master/templates/sso-oauth-realm-templates.yml
 +
-.Parameters:
-[options="header"]
-|=======================
-  | Parameter | Value | Remarks
-  | OPENSHIFT_MASTER | https://master.${GUID}.rhte.opentlc.com:443 | GUID of the server to be provided.
-  | KEYCLOAK_ROUTE_HOSTNAME | TBD        | To be provided from the sso deployment
-  | MICROCKS_ROUTE_HOSTNAME | TBD        | To be provided from the microcks deployment
-  | APICURIO_UI_ROUTE_HOSTNAME | TBD        | To be provided from the microcks deployment
-  | OPENSHIFT_OAUTH_CLIENT_NAME | laboauth        | OAuthclient to use for Openshift IDP with SSO
-|=======================
+NOTE: Login to admin portal using HTTPS and then click on *Login* tab, and choose *Require SSL* to *none*.
 +
-. Commands
-+
------
+image::rhsso_ssl_disable.png[]
 
-OPENSHIFT_MASTER=https://master.${GUID}.rhte.opentlc.com:443
-KEYCLOAK_ROUTE_HOSTNAME=$HOSTNAME_HTTP
-MICROCKS_ROUTE_HOSTNAME=
-APICURIO_UI_ROUTE_HOSTNAME=
-OPENSHIFT_OAUTH_CLIENT_NAME=laboauth
-
-# This needs to be run after SSO, Microcks & Apicurio have been deployed successfully.
-
-oc process -f https://raw.githubusercontent.com/gpe-mw-training/rhte-api-as-business-labs/master/templates/sso-oauth-realm-templates.yml--param=OPENSHIFT_MASTER=$OPENSHIFT_MASTER --param=KEYCLOAK_ROUTE_HOSTNAME=$KEYCLOAK_ROUTE_HOSTNAME --param=MICROCKS_ROUTE_HOSTNAME=$MICROCKS_ROUTE_HOSTNAME --param=APICURIO_UI_ROUTE_HOSTNAME=$APICURIO_UI_ROUTE_HOSTNAME --param=OPENSHIFT_OAUTH_CLIENT_NAME=$OPENSHIFT_OAUTH_CLIENT_NAME -n $PROJECT_NAME_INFRA
-
------
-
-==== Red Hat Single Sign On (One per student for OIDC):
-
-. Template: https://github.com/gpe-mw-training/rhte-api-as-business-labs/blob/master/templates/sso71-mysql-persistent_with_limit.yaml
-. Realm: https://github.com/gpe-mw-training/rhte-api-as-business-labs/blob/master/templates/sso/3scale_realm.json
-+
-. Commands:
-+
------
-
-# To run in a loop, once for each student
-
-SSO_ADMIN_USERNAME=admin
-SSO_ADMIN_PASSWORD=password
-HOSTNAME_HTTP=http://sso-${PROJECT_NAME_SSO$seq}.apps.${GUID}.rhte.opentlc.com
-
-oc create serviceaccount sso-service-account
-oc policy add-role-to-user view system:serviceaccount:rh-sso:sso-service-account
-oc create -f https://github.com/gpe-mw-training/rhte-api-as-business-labs/blob/master/templates/sso71-mysql-persistent_with_limit.yaml -n openshift
-oc new-app --template=sso71-mysql-persistent --param=SSO_ADMIN_USERNAME=$SSO_ADMIN_USERNAME --param=SSO_ADMIN_PASSWORD=$SSO_ADMIN_PASSWORD --param=HOSTNAME_HTTP=$HOSTNAME_HTTP
-
------ 
 
 
 ==== Apicurio Studio:
@@ -228,8 +195,10 @@ oc new-app --template=sso71-mysql-persistent --param=SSO_ADMIN_USERNAME=$SSO_ADM
 [options="header"]
 |=======================
   | Parameter | Value | Remarks
-  | GUID | ${GUID} | Unique GUID of the server.
-  | AUTH_ROUTE  | $HOSTNAME_HTTP/auth | URL of the SSO server
+  | APICURIO_UI_ROUTE | apicurio-studio.apps.$OCP_DOMAIN
+  | APICURIO_API_ROUTE | apicurio-studio-api.apps.$OCP_DOMAIN
+  | APICURIO_WS_ROUTE | apicurio-studio-ws.apps.$OCP_DOMAIN
+  | AUTH_ROUTE  | $SSO_HOSTNAME_HTTP/auth | URL of the SSO server
 |=======================
 +
 . Commands:
@@ -237,13 +206,11 @@ oc new-app --template=sso71-mysql-persistent --param=SSO_ADMIN_USERNAME=$SSO_ADM
 -----
 
 
-SSO_ADMIN_USERNAME=admin
-SSO_ADMIN_PASSWORD=password
-AUTH_ROUTE=$HOSTNAME_HTTP
+AUTH_ROUTE=$SSO_HOSTNAME_HTTP
 
 
 oc create -f https://raw.githubusercontent.com/gpe-mw-training/rhte-api-as-business-labs/master/templates/apicurio-template.yml -n openshift
-oc new-app --template=apicurio-studio --param=GUID=$GUID --param=AUTH_ROUTE=$HOSTNAME_HTTP/auth
+oc new-app --template=apicurio-studio --param=AUTH_ROUTE=$HOSTNAME_HTTP/auth--param=UI_ROUTE=$APICURIO_UI_ROUTE --param=API_ROUTE=$APICURIO_API_ROUTE --param=WS_ROUTE=$APICURIO_WS_ROUTE --param=API_JVM_MAX=2000m --param=API_MEM_LIMIT=3000Mi --param=WS_JVM_MAX=2000m --param=WS_MEM_LIMIT=2500Mi --param=UI_JVM_MAX=1800m --param=UI_MEM_LIMIT=2500Mi 
 
 ----- 
 
@@ -258,67 +225,59 @@ oc new-app --template=apicurio-studio --param=GUID=$GUID --param=AUTH_ROUTE=$HOS
 [options="header"]
 |=======================
   | Parameter | Value | Remarks
-  | APP_ROUTE_HOSTNAME | http://microcks.$GUID.rhte.opentlc.com | Microcks hostname URL.
-  | KEYCLOAK_ROUTE_HOSTNAME  | $HOSTNAME_HTTP/auth | URL of the SSO server
+  | MICROCKS_ROUTE_HOSTNAME | microcks.apps.$DOMAIN| Microcks hostname URL.
+  | KEYCLOAK_ROUTE_HOSTNAME  | http://$SSO_HOSTNAME_HTTP/auth | URL of the SSO server
 |=======================
 +
 . Commands:
 +
 -----
 
-KEYCLOAK_ROUTE_HOSTNAME=$HOSTNAME_HTTP
-APP_ROUTE_HOSTNAME=http://microcks.$GUID.rhte.opentlc.com
+KEYCLOAK_ROUTE_HOSTNAME=http://$SSO_HOSTNAME_HTTP/auth
+APP_ROUTE_HOSTNAME=microcks.$GUID.rhte.opentlc.com
 
 oc create -f https://raw.githubusercontent.com/gpe-mw-training/rhte-api-as-business-labs/master/templates/microcks-persistent-no-keycloak-template.yml -n openshift
-oc new-app --template=apicurio-studio --param=APP_ROUTE_HOSTNAME=$APP_ROUTE_HOSTNAME --param=KEYCLOAK_ROUTE_HOSTNAME=$HOSTNAME_HTTP/auth
+oc new-app --template=microcks-persistent-no-keycloak --param=APP_ROUTE_HOSTNAME=$MICROCKS_ROUTE_HOSTNAME --param=KEYCLOAK_ROUTE_HOSTNAME=$KEYCLOAK_ROUTE_HOSTNAME
 
 ----- 
 
 
+==== Red Hat Single Sign On Realms:
 
+This section is to set up the *apicurio* and *microcks* realm for Red Hat SSO.
 
-==== Fuse Ignite 
-
-. One instance per student
-. deployed and ready for use
-. Templates:
-.. ImageStreams: https://raw.githubusercontent.com/gpe-mw-training/rhte-api-as-business-labs/master/templates/fuse-ignite-image-streams.yml
-+
-NOTE: Replaced fuse-s2i image stream with the release from Pable (quay.io/pszuster/fuse-s2i:latest)
-
-.. Deployment: https://raw.githubusercontent.com/gpe-mw-training/rhte-api-as-business-labs/master/templates/fuse-ignite-ocp.yml
-. Deploy one instance per student:
+. Template : https://github.com/gpe-mw-training/rhte-api-as-business-labs/blob/master/templates/sso-oauth-realm-templates.yml
 +
 .Parameters:
 [options="header"]
 |=======================
   | Parameter | Value | Remarks
-  | QUOTES_URL | TBD | 3scale production endpoint URL for the Quote API for the tenant.
-  | SSO_URL  | TBD | URL of corresponding SSO host for the tenant
-  | QUOTES_CLIENTID  | TBD | Client id for OAuth in 3scale  
-  | QUOTES_SECRET  | TBD | Client secret for OAuth in 3scale 
+  | OPENSHIFT_MASTER | https://master.${GUID}.rhte.opentlc.com:443 | GUID of the server to be provided.
+  | KEYCLOAK_ROUTE_HOSTNAME | TBD        | To be provided from the sso deployment
+  | MICROCKS_ROUTE_HOSTNAME | TBD        | To be provided from the microcks deployment
+  | APICURIO_UI_ROUTE | TBD        | To be provided from the microcks deployment
+  | OPENSHIFT_OAUTH_CLIENT_NAME | laboauth        | OAuthclient to use for Openshift IDP with SSO
 |=======================
 +
 . Commands
 +
 -----
-# To run in a loop, once for each student
 
-oc project $PROJECT_NAME_IGNITE$seq
+OPENSHIFT_MASTER=https://master.${REGION}.rhte.opentlc.com:443
+KEYCLOAK_ROUTE_HOSTNAME=$SSO_HOSTNAME_HTTP
+MICROCKS_ROUTE_HOSTNAME=$MICROCKS_ROUTE_HOSTNAME
+APICURIO_UI_ROUTE_HOSTNAME=$APICURIO_UI_ROUTE
+OPENSHIFT_OAUTH_CLIENT_NAME=laboauth
 
-oc create -f https://raw.githubusercontent.com/gpe-mw-training/rhte-api-as-business-labs/master/templates/sso/serviceaccount-as-oauthclient-restricted.yml
-oc create -f https://raw.githubusercontent.com/gpe-mw-training/rhte-api-as-business-labs/master/templates/fuse-ignite-ocp.yml
-          
-sleep 5s
+# This needs to be run after SSO, Microcks & Apicurio have been deployed successfully.
 
-var=$(oc sa get-token syndesis-oauth-client) 
+oc process -f https://raw.githubusercontent.com/gpe-mw-training/rhte-api-as-business-labs/master/templates/sso-oauth-realm-templates.yml--param=OPENSHIFT_MASTER=$OPENSHIFT_MASTER --param=KEYCLOAK_ROUTE_HOSTNAME=$KEYCLOAK_ROUTE_HOSTNAME --param=MICROCKS_ROUTE_HOSTNAME=$MICROCKS_ROUTE_HOSTNAME --param=APICURIO_UI_ROUTE_HOSTNAME=$APICURIO_UI_ROUTE_HOSTNAME --param=OPENSHIFT_OAUTH_CLIENT_NAME=$OPENSHIFT_OAUTH_CLIENT_NAME -n $PROJECT_NAME_INFRA  | oc create -f -
 
-oc new-app --template "fuse-ignite"  --param=OPENSHIFT_PROJECT=$PROJECT_NAME_IGNITE$seq --param=OPENSHIFT_OAUTH_CLIENT_SECRET=$var --param=IMAGE_STREAM_NAMESPACE=openshift 
------ 
-
-
-
-NOTE: Cluster Quota for secrets & service accounts needs to be configured based on number of projects running in the cluster. Rough estimate is 9 x No. of Projects + any custom secrets
+-----
++
+NOTE: The 2 configs need to be added as Volume mounts to the *sso* deployment. Path should be *_/config/$APP_NAME-config_*.
++
+NOTE: the realms are not being imported from config map. Need to Investigate. Quick workaround is to copy the data from config map for both microcks and apicurio realms and import to SSO using admin console.
 
 ==== Decision Manager API Service
 
@@ -350,14 +309,16 @@ NOTE: Cluster Quota for secrets & service accounts needs to be configured based 
 oc project $PROJECT_NAME_RHDM
 
  APPLICATION_NAME=quoting
- KIE_ADMIN_USER admin
- KIE_ADMIN_PWD password 
- KIE_SERVER_USER user
- KIE_SERVER_PWD password
+ KIE_ADMIN_USER=admin
+ KIE_ADMIN_PWD=password 
+ KIE_SERVER_USER=user
+ KIE_SERVER_PWD=password
  KIE_SERVER_CONTAINER_DEPLOYMENT=quoting=com.redhat:insuranceQuoting:1.0.1
  SOURCE_REPOSITORY_URL=https://github.com/gpe-mw-training/rhte-api-as-business-labs
  SOURCE_REPOSITORY_REF=master
  CONTEXT_DIR=services/InsuranceQuoting
+
+oc create -f https://raw.githubusercontent.com/jboss-container-images/rhdm-7-openshift-image/7.0.x/rhdm70-image-streams.yaml -n openshift
 
 
 oc create -f https://raw.githubusercontent.com/gpe-mw-training/rhte-api-as-business-labs/master/templates/rhdm70-kieserver-basic-s2i.yaml -n openshift
@@ -367,6 +328,77 @@ oc create -f https://raw.githubusercontent.com/gpe-mw-training/rhte-api-as-busin
 oc new-app  --name=quoting --template rhdm70-kieserver-basic-s2i  --param=APPLICATION_NAME=$APPLICATION_NAME  --param=KIE_ADMIN_USER=$KIE_ADMIN_USER --param=KIE_ADMIN_PWD=$KIE_ADMIN_PWD --param=KIE_SERVER_USER=$KIE_SERVER_USER --param=KIE_SERVER_PWD=$KIE_SERVER_PWD --param=KIE_SERVER_CONTAINER_DEPLOYMENT=$KIE_SERVER_CONTAINER_DEPLOYMENT --param=SOURCE_REPOSITORY_URL=$SOURCE_REPOSITORY_URL --param=SOURCE_REPOSITORY_REF=$SOURCE_REPOSITORY_REF --param=CONTEXT_DIR=$CONTEXT_DIR
 
 ----- 
++
+NOTE: The Route for accessing the Rules API is http://quoting-kieserver-rhdm.apps.$DOMAIN
+
+==== Fuse Ignite 
+
+. One instance per student
+. deployed and ready for use
+. Templates:
+.. ImageStreams: https://raw.githubusercontent.com/gpe-mw-training/rhte-api-as-business-labs/master/templates/fuse-ignite-image-streams.yml
++
+NOTE: Replaced fuse-s2i image stream with the release from Pable (quay.io/pszuster/fuse-s2i:latest)
+
+.. Deployment: https://raw.githubusercontent.com/gpe-mw-training/rhte-api-as-business-labs/master/templates/fuse-ignite-ocp.yml
+. Deploy one instance per student:
++
+.Parameters:
+[options="header"]
+|=======================
+  | Parameter | Value | Remarks
+  | QUOTES_URL | TBD | 3scale production endpoint URL for the Quote API for the tenant.
+  | SSO_URL  | TBD | URL of corresponding SSO host for the tenant
+  | QUOTES_CLIENTID  | TBD | Client id for OAuth in 3scale  
+  | QUOTES_SECRET  | TBD | Client secret for OAuth in 3scale 
+|=======================
++
+. Commands
++
+-----
+# To run in a loop, once for each student
+
+oc project $PROJECT_NAME_IGNITE$seq
+
+ oc create -f https://raw.githubusercontent.com/gpe-mw-training/rhte-api-as-business-labs/master/templates/fuse-ignite-image-streams.yml  -n openshift
+oc create -f https://raw.githubusercontent.com/gpe-mw-training/rhte-api-as-business-labs/master/templates/sso/serviceaccount-as-oauthclient-restricted.yml
+oc create -f https://raw.githubusercontent.com/gpe-mw-training/rhte-api-as-business-labs/master/templates/fuse-ignite-ocp.yml
+          
+sleep 5s
+
+var=`oc sa get-token syndesis-oauth-client`
+
+oc new-app --template "fuse-ignite"  --param=OPENSHIFT_PROJECT=$PROJECT_NAME_IGNITE$seq --param=OPENSHIFT_OAUTH_CLIENT_SECRET=$var --param=IMAGE_STREAM_NAMESPACE=openshift 
+----- 
+
+
+
+
+
+==== Red Hat Single Sign On (One per student for OIDC):
+
+. Ephemeral RH SSO application for each student.
+. To use for setting up clients & OIDC to their 3scale APIs.
+. Template: https://github.com/gpe-mw-training/rhte-api-as-business-labs/blob/master/templates/sso71-mysql-persistent_with_limit.yaml
+. Realm: https://github.com/gpe-mw-training/rhte-api-as-business-labs/blob/master/templates/sso/3scale_realm.json
++
+. Commands:
++
+-----
+
+# To run in a loop, once for each student
+
+SSO_ADMIN_USERNAME=admin
+SSO_ADMIN_PASSWORD=password
+HOSTNAME_HTTP=http://sso-${PROJECT_NAME_SSO$seq}.apps.${GUID}.rhte.opentlc.com
+
+oc create serviceaccount sso-service-account
+oc policy add-role-to-user view system:serviceaccount:$PROJECT_NAME_SSO:sso-service-account
+ oc create -f https://raw.githubusercontent.com/pszuster/3ScaleTD/master/templates/sso72-x509-https.json
+oc new-app --template=sso72-x509-https --param HOSTNAME_HTTP=user1-sso-unsecured.apps.$DOMAIN --param HOSTNAME_HTTPS=user1-sso.apps.$DOMAIN --param SSO_ADMIN_USERNAME=admin --param SSO_ADMIN_PASSWORD=password --param SSO_SERVICE_USERNAME=admin --param SSO_SERVICE_PASSWORD=password --param SSO_REALM=3scaleRealm
+
+----- 
+
 
 ==== NodeJS:
 
