@@ -145,11 +145,11 @@ Microcks is an open-source communication and runtime tool for developing API ser
 
 More information here: http://microcks.github.io
 
-. A single instance of *Microcks* is installed in the OCP cluster. You can access the microcks URL by navigating to the following URL in the browser: http://microcks.${REGION}.apps.${OCP_DOMAIN}
-+
+A single instance of *Microcks* is installed in the OCP cluster. You can access the microcks URL by navigating to the following URL in the browser: http://microcks.${REGION}.apps.${OCP_DOMAIN}
+
 NOTE: Here *$REGION* represents the 4 character region code of your OCP instance, and $OCP_DOMAIN represents the domain extension (for RHTE: rhte.opentlc.com).
 
-. You should be redirected to the login page.
+. Open the microcks URL in a browser. You should be redirected to the login page.
 . Click on *OpenShift v3" login.
 +
 image::images/microcks-login-page.png[]
@@ -184,11 +184,11 @@ Apicurio studio is an opensource standalone API design studio that can be used t
 More Information here: https://github.com/Apicurio/apicurio-studio
 
 
-. A single instance of *Apicurio* is installed in the OCP cluster. You can access the apicurio URL by navigating to the following URL in the browser: http://apicurio-studio.${REGION}.apps.${OCP_DOMAIN}
-+
+A single instance of *Apicurio* is installed in the OCP cluster. You can access the apicurio URL by navigating to the following URL in the browser: http://apicurio-studio.${REGION}.apps.${OCP_DOMAIN}
+
 NOTE: Here *$REGION* represents the 4 character region code of your OCP instance, and $OCP_DOMAIN represents the domain extension (for RHTE: rhte.opentlc.com).
 
-. You should be redirected to the login page.
+. Open the apicurio URL in a browser. You should be redirected to the login page.
 . Click on *OpenShift v3" login.
 +
 image::images/apicurio-login-page.png[]
