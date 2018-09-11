@@ -153,8 +153,8 @@ NOTE: The Staging & Production pods created in the userX-gw namespace are paused
   | SSO_ADMIN_USERNAME | admin | To be provided in the new-app command
   | SSO_ADMIN_PASSWORD | password | To be provided in the new-app command
   | APPLICATION_NAME | sso | Default
-  | SSO_HOSTNAME_HTTP | sso-unecured.apps.$DOMAIN
-  | SSO_HOSTNAME_HTTPS | sso.apps.$DOMAIN
+  | SSO_HOSTNAME_HTTP | sso-unecured.apps.$OCP_DOMAIN
+  | SSO_HOSTNAME_HTTPS | sso.apps.$OCP_DOMAIN
 |=======================
 +
 . Commands:
@@ -163,8 +163,8 @@ NOTE: The Staging & Production pods created in the userX-gw namespace are paused
 
 SSO_ADMIN_USERNAME=admin
 SSO_ADMIN_PASSWORD=password
-SSO_HOSTNAME_HTTP=sso-unsecured.apps.${DOMAIN}
-SSO_HOSTNAME_HTTPS=sso.apps.${DOMAIN}
+SSO_HOSTNAME_HTTP=sso-unsecured.apps.${OCP_DOMAIN}
+SSO_HOSTNAME_HTTPS=sso.apps.${OCP_DOMAIN}
 
 oc project $PROJECT_NAME_INFRA
 
@@ -331,48 +331,45 @@ oc new-app  --name=quoting --template rhdm70-kieserver-basic-s2i  --param=APPLIC
 +
 NOTE: The Route for accessing the Rules API is http://quoting-kieserver-rhdm.apps.$DOMAIN
 
-==== Fuse Ignite 
+==== Syndesis
 
 . One instance per student
 . deployed and ready for use
-. Templates:
-.. ImageStreams: https://raw.githubusercontent.com/gpe-mw-training/rhte-api-as-business-labs/master/templates/fuse-ignite-image-streams.yml
 +
-NOTE: Replaced fuse-s2i image stream with the release from Pable (quay.io/pszuster/fuse-s2i:latest)
+NOTE: Using Upstream Open Source project Syndesis instead of Fuse Online due to issues with API response marshalling which is fixed upstream.
 
-.. Deployment: https://raw.githubusercontent.com/gpe-mw-training/rhte-api-as-business-labs/master/templates/fuse-ignite-ocp.yml
+. Deployment:https://raw.githubusercontent.com/syndesisio/syndesis/master/tools/bin/install-syndesis
+
 . Deploy one instance per student:
 +
 .Parameters:
 [options="header"]
 |=======================
   | Parameter | Value | Remarks
-  | QUOTES_URL | TBD | 3scale production endpoint URL for the Quote API for the tenant.
-  | SSO_URL  | TBD | URL of corresponding SSO host for the tenant
-  | QUOTES_CLIENTID  | TBD | Client id for OAuth in 3scale  
-  | QUOTES_SECRET  | TBD | Client secret for OAuth in 3scale 
+  | ROUTE_HOSTNAME | http://$USER$seq-fuse-ignite.apps.$OCP_DOMAIN |
 |=======================
 +
 . Commands
 +
 -----
+
+# To run once per cluster
+
+bash install-syndesis --setup
+
+for (each userX)
+bash install-syndesis --grant userX
+end
+
 # To run in a loop, once for each student
+
+oc new-project userX-fuse-ignite
 
 oc project $PROJECT_NAME_IGNITE$seq
 
- oc create -f https://raw.githubusercontent.com/gpe-mw-training/rhte-api-as-business-labs/master/templates/fuse-ignite-image-streams.yml  -n openshift
-oc create -f https://raw.githubusercontent.com/gpe-mw-training/rhte-api-as-business-labs/master/templates/sso/serviceaccount-as-oauthclient-restricted.yml
-oc create -f https://raw.githubusercontent.com/gpe-mw-training/rhte-api-as-business-labs/master/templates/fuse-ignite-ocp.yml
-          
-sleep 5s
+bash install-syndesis --route $(oc project -q).apps.$OCP_DOMAIN --open --tag=1.5.4-20180910
 
-var=`oc sa get-token syndesis-oauth-client`
-
-oc new-app --template "fuse-ignite"  --param=OPENSHIFT_PROJECT=$PROJECT_NAME_IGNITE$seq --param=OPENSHIFT_OAUTH_CLIENT_SECRET=$var --param=IMAGE_STREAM_NAMESPACE=openshift 
 ----- 
-
-
-
 
 
 ==== Red Hat Single Sign On (One per student for OIDC):

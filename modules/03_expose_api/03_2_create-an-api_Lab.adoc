@@ -7,8 +7,14 @@
 * Enter the following values:
 ** **Name**: Quoting
 ** **System name**: quoting
++
+image::images/3scale-quoteAPI-create1.png[]
+
 * Select **OpenID Connect** as Authentication mechanism.
 * Click on the **Create Service** button.
++
+image::images/3scale-quoteAPI-create2.png[]
+
 * Click on **Create Application Plan** under the **Quoting** API.
 +
 image::images/3scale-appPlan.png[]
