@@ -149,7 +149,7 @@ END_TENANT=3
 +
 ----
 
-$ oc login https://{OPENSHIFT_MASTER -u opentlc-mgr
+$ oc login https://${OPENSHIFT_MASTER} -u opentlc-mgr
 
 ----
 
