@@ -4,9 +4,10 @@
 :toc2:
 
 
+
 == Introduction
 
-This lab shows the set up of OCP cluster, common projects and appliations necessary for running the *API as a Business* lab.
+This lab shows the set up of OCP cluster, common projects and applic ations necessary for running the *API as a Business* lab.
 
 .Goal
 
@@ -20,7 +21,7 @@ This lab shows the set up of OCP cluster, common projects and appliations necess
 ** Red Hat Fuse Online for each user
 ** Red Hat Single Sign On (SSO) server for each tenant
 
-IMPORTANT: If you are a student accessing the labs in a classroom, please skip this lab as the following set up has already been completed for your environment.
+IMPORTANT: [red yellow-background big]*If you are a student accessing the labs in a classroom, please skip this lab as the following set up has already been completed for your environment.*
 
 
 == Deployment

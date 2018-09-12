@@ -71,9 +71,9 @@ Once you've ssh'd into your remote terminal window, you'll want to set the follo
 
 echo "export LAB_CODE=a1011" >> ~/.bashrc
 echo "export OCP_USERNAME=userX" >> ~/.bashrc
-echo "export OCP_PASSWD=r3dh4t1\!" >> ~/.bashrc
+echo "export OCP_PASSWD=r3dh4t1!" >> ~/.bashrc
 echo "export OCP_REGION=`echo $HOSTNAME | cut -d'.' -f2`" >> ~/.bashrc
-echo "export OCP_DOMAIN=\$OCP_REGION.rhte.opentlc.com" >> ~/.bashrc
+echo "export OCP_DOMAIN=$OCP_REGION.rhte.opentlc.com" >> ~/.bashrc
 
 
 source ~/.bashrc
@@ -134,6 +134,18 @@ NOTE: If your web browser prompts about `connection privacy / security`, select 
 +
 NOTE: Replace userX with your actual userid.
 
+Notice that you are provided with access to the following OpenShift projects:
+
+. *lab-infra*
+. *rhdm*
+. userX-gw
+. userX-sso
+. userX-fuse-ignite
+. userX-client
+
+image::images/ocp-projects-list.png[]
+
+NOTE: The first 2 projects: lab_infra & rhdm are global projects for which view access has been provided to you. The projects with your userId prefix are provisioned for your exclusive use.
 
 == Login to Applications
 
@@ -269,13 +281,31 @@ image::images/3scale-admin-dashboard.png[]
 Congratulations, your 3scale API Management Platform is set up correctly.  Please keep this window open for use later in the lab.
 
 
+=== Red Hat 3scale API Gateway
+
+You have been provisioned with a set of APIcast gateways in the project userX-gw. Here, you will have 2 gateways deployed: *stage-apicast* and *prod-apicast*.
+
+Both the gateways have been configured to communicate with the backend URL for your 3scale tenant.
+
+image::images/ocp-userX-gw-dc.png[]
+
+A route for each gateway is set up. The routes for Staging & Production are https://${OCP_USERNAME}-quote-stage.apps.${OCP_DOMAIN} and https://${OCP_USERNAME}-quote-prod.apps.${OCP_DOMAIN} respectively.
+
+Notice that both the pods are running.
+
+image::images/ocp-userX-gw-all.png[]
+
+Congratulations, your 3scale API Gateway is set up correctly. Please note your staging & production URLs as you will need it later in the labs.
+
+
+
 == Congratulations!
 
 In this lab you successfully completed the intial set up. You have verified that all the required applications are setup and working correctly for your account. You are now ready to work on the business use case of the lab.
 
 IMPORTANT: If you are unable to access any of the above applications, please consult your instructor. Please do not try to proceed with the labs until all the applications are set up correctly.
 
-Proceed to the next labs.
+Proceed to the next lab.
 
 
 
