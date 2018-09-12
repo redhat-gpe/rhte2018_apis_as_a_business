@@ -1,3 +1,10 @@
+:scrollbar:
+:data-uri:
+:toc2:
+:noaudio:
+
+
+
 == Business Use case
 
 ACME Insurance is a leading Motor Insurance provider globally. As part of their new IT strategy, they plan to take a microservices & REST API management approach to build their new Insurance Quotation platform. As the API Provider, ACME Insurance intends to provide a REST API for their Insurance Quote platform to their partners and customers. They want the platform to be developed using DevOps methodology, and showcasing latest design and architecture practises. 
