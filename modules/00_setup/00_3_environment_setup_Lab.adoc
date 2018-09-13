@@ -182,7 +182,7 @@ image::images/microcks-login-sso-additional.png[]
 +
 image::images/microcks_home_page.png[]
 
-. You should see a service called *Driver Service* configured. Click on *Details*.
+. You should see a service called *Driver Service* configured. 
 +
 image::images/microcks-driver-service.png[]
 
@@ -220,6 +220,11 @@ image::images/apicurio-login-sso-additional.png[]
 . Now you should get redirected to the home page of Microcks. Click on *Services*.
 +
 image::images/apicurio_home_page.png[]
+
+. You also need to open the following URLs in the same browser window (in different tabs) and accept the HTTPS certificate exception.
++
+* https://apicurio-studio-ws.apps.${REGION}.${OCP_DOMAIN}
+* https://apicurio-studio-api.apps.${REGION}.${OCP_DOMAIN}
 
 
 Congratulations, your Apicurio application is set up correctly. Please keep this window open for use later in the lab.

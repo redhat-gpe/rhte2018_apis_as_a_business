@@ -24,10 +24,12 @@ Two parts:
 ==== Backend:
 
 2 backend APIs in Insurance domain:
+
 - One API for Insurance Quote calculation (REST API using Decision Manager)
 - One API for Driver Verification (mock service)
 
 1 composite API:
+
 . Expose a REST API getting a Quote Request, enrich the request with Driver Verification details, and generate an Insurance Quote response.
 
 API Gateway:
