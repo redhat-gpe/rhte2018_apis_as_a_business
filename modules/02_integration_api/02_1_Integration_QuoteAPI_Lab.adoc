@@ -21,11 +21,11 @@ image::images/api-usecase-hld-lab2.png[]
 
 There are certain extensions that are required to be installed in Syndesis in order to enable certain features required for the lab. These are:
 
-. *Webhook. - This extension provides a connector that allows to expose a HTTP endpoint in order to receive triggers from external platforms.
-. *Datashape. - to specify input and output data shapes in the exchange.
-. *SetBodyJS. - to set the body of the exchange using `javadcript`.
-. *ManageHeaders. - to set the or remove an header of the exchange.
-. *Script. - to add dynamic scripting to Syndesis using either `groovy` or `javascript`.
+. *Webhook* - This extension provides a connector that allows to expose a HTTP endpoint in order to receive triggers from external platforms.
+. *Datashape* - to specify input and output data shapes in the exchange.
+. *SetBodyJS* - to set the body of the exchange using `javadcript`.
+. *ManageHeaders* - to set the or remove an header of the exchange.
+. *Script* - to add dynamic scripting to Syndesis using either `groovy` or `javascript`.
 
 === Import Extensions
 
@@ -341,6 +341,10 @@ exchange.out.body =JSON.stringify(obj);
 -----
 
 . Click on the *Done* button.
+
+* Your Integration should look like this:
++
+image::images/ignite-integration-summary.png[]
 
 . Click on the *Publish* button.
 
