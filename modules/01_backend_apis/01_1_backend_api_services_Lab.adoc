@@ -9,7 +9,7 @@
 
 In this lab, you will be introduced to the 2 backend APIs, and will seed some sample data to be used for the labs.
 
-image::images/api-usecase-hld-lab1.jpeg[]
+image::images/api-usecase-hld-lab1.jpg[]
 
 .Goals
 
