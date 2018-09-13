@@ -1,0 +1,393 @@
+
+:noaudio:
+:scrollbar:
+:data-uri:
+:toc2:
+:linkattrs:
+
+== Introduction
+
+In this lab, you will create the Integration flow to orchestrate the 2 backend services, and expose a composite REST QuoteAPI service.
+
+image::images/api-usecase-hld-lab2.png[]
+
+.Goals
+* Import the required extensions to Syndesis.
+* Create API connectors
+* Create the Syndesis Integration
+* Test the QuoteAPI Service
+
+== Syndesis Configuration - Extensions
+
+There are certain extensions that are required to be installed in Syndesis in order to enable certain features required for the lab. These are:
+
+. *Webhook. - This extension provides a connector that allows to expose a HTTP endpoint in order to receive triggers from external platforms.
+. *Datashape. - to specify input and output data shapes in the exchange.
+. *SetBodyJS. - to set the body of the exchange using `javadcript`.
+. *ManageHeaders. - to set the or remove an header of the exchange.
+. *Script. - to add dynamic scripting to Syndesis using either `groovy` or `javascript`.
+
+=== Import Extensions
+
+. Open the Fuse Ignite (Syndesis) web console on the browser.
+. Click on the *Customizations* tab.
+. Click on the *Extensions* tab.
+. Click on the *Import Extension* button.
++
+image::images/ignite-Extensions.png[]
+
+. Select the *fuse-ignite/extensions/syndesis-extension-setbodyjs-1.0.0.jar* file.
+. Click on the *Import Extension* button.
++
+image::images/ignite-ImportExtension.png[]
+
+. Repeat these steps for the following extensions:
+
+.. syndesis-connector-datashape-1.0.0.jar
+.. syndesis-extension-script-1.0.0.jar
+.. syndesis-extension-manage-headers-1.0.0.jar
+.. syndesis-connector-webhook-1.0.0.jar
++
+image::images/ignite-ImportedExtensions.png[]
+
+. Click on the *Connections* tab.
+
+. Click on the *Create Connection* button.
+
+. Select *DataShape Connector*.
+. Enter *DataShape. as *Connection Name*.
+. Click on the *Create* button.
++
+image::images/ignite-CreateDataShapeConnection.png[]
+
+. Click on the *Create Connection* button.
+
+. Select *Webhook*.
+. Enter *WebhookExt* as *Connection Name*.
+. Click on the *Create* button.
+
+Congratulations, the syndesis extensions are now imported successfully.
+
+== Syndesis Configuration - Connectors
+
+We now need to configure the 2 backend APIs: *Driver Service. and *Insurance Quote Calculation. service as API connectors in Syndesis.
+
+=== Create API Connections
+
+. Click on the *Customizations* tab.
+. Click on the *API Client Connectors* tab.
+. Click on the *Create API Connector* button.
++
+image::images/ignite-APIConnectorImport.png[]
+
+. Click on the *Choose File* button and browse to the location of the *Driver.json* file.
++
+NOTE: The driver.json file was downloaded from the *Apicurio studio* in the previous lab.
+
+. Click on the *Next* button.
++
+image::images/ignite-ImportAPIConnectorDriver.png[]
+
+. Click on the *Next* button again.
+. Click on the *Next* button again.
+. Enter the following values:
++
+.Parameters
+[options="header"]
+|=======================
+| Parameter | Value 
+| *Host* | http://microcks.microcks.svc.cluster.local:8080
+| *Base URL* | /dynarest/Driver%20Service/1.0/ 
+|=======================
+
+. Click on the *Create API Connector* button.
++
+image::images/ignite-CreateAPIConnectorDriver2.png[]
+
+. Click on the *Create API Connector* button again.
+. Click on the *Choose File* button and browse to *services/RHDM-InsuranceQuoting.json*
+. Click on the *Next* button
+. Click on the *Next* button again.
+. Click on the *Next* button again.
+
+. Enter the following values:
++
+.Parameters
+[options="header"]
+|=======================
+| Parameter | Value 
+| *Host* | http://quoting-kieserver.rhdm.svc.cluster.local:8080
+| *Base URL* | /services/rest 
+|=======================
+
+. Click on the *Create API Connector* button.
++
+image::images/ignite-CreateAPIConnectorRHDM.png[]
+
+. Click on the *Connections* tab.
+. Click on the *Create Connection* button.
+. Select *Driver*.
++
+image::images/ignite-CreateAPIConnectionDriver.png[]
+
+. Click on the *Next* button.
+. Enter *Driver API* as *Connection Name*.
+. Click on the *Create* button.
++
+image::images/ignite-CreateAPIConnectionDriver-2.png[]
+
+. Click on the *Create Connection* button.
+. Select *Insurance Quoting*.
+. Enter the following values:
+. *Username:* user
+. *Password:* password
+. Click on the *Next* button
++
+image::images/ignite-CreateAPIConnectionRHDM2.png[]
+
+. Enter *RHDM-InsuranceQuoting* as *Connection Name*.
+. Click on the *Create Connection* button.
+
+Congratulations, the API connectors for both backend services are now set up correctly in Syndesis. 
+
+
+== Syndesis Integration
+
+The Integration on Syndesis will consist of the following steps:
+
+* *WebHook Connector* - Starting point of Integration, to expose a HTTP POST endpoint. Will receive a Quote Request JSON object.
+* *setBodyJS* - To extract the *id* of the request.
+* *Set Header* - To set the header *Connection: close* so that the HTTP connection to Driver API is closed.
+* *Driver API* - External request to Driver Service mock API to get the Driver validation details.
+* *DataMapper* - To map the response message to the Request for the Insurance Quote Calculation Service.
+* *Script* - To set the required HTTP headers and JSON object for the Insurance Quote calculation Service.
+* *RHDMInsuranceQuoting* - External request to Insurance Quote Calculation service to get the price quote for the driver.
+* *DataMapper* - To map the response message to the Quote response object.
+* *DataShape Connector* - Finish connector, for returning the Quote Response JSON object data shape. 
+
+The Integration design is as below:
+
+image::images/rhte_BAPI_flow.png[]
+
+=== Create the Integration
+
+. Click on the *Integrations* tab.
+. Click on the *Create Integration* button.
+. Select *Webhook* as the *Start Connection*.
++
+image::images/ignite-IntegrationWebhook.png[]
+
+. Select the only available action.
+
+. Change the *Webhook Token* to *QuoteAPI*.
+
+. Click on the *Next button.*
++
+image::images/ignite-CreateWebHookToken.png[]
+
+. Select *JSON Instance* as *Type.*
+
+. Paste the contents of the *Labs\quoteRequest.json* file into the *Definition* field.
+
+. Enter *QuoteRequest* as *Data Type Name*.
+
+. Click on the *Done* button.
++
+image::images/ignite-DefineWebhookDatashape.png[]
+
+. Select *DataShape* as the *Finish* *Connection*.
+
+. Select the only available action.
+
+. Select *JSON Instance* as *Type.*
+
+. Enter the following in the *Definition* field:
++
+-----
+{ "price": 123 }
+-----
+
+. Enter *QuoteResponse* as *Data Type Name*.
+
+. Click on the *Done *button*.
++
+image::images/ignite-CreateDataShapeDefinitio.png[]
+
+. Hover over the *plus* sign and click on *Add a Step*.
+. Select *Set Body JS.*
+. Enter the following as *Body:*
++
+-----
+'{"parameters":{"id": "' + JSON.parse(exchange.in.getBody(java.lang.String.class)).driver.id + '"}}'
+-----
+
+. Click on the *Done *button.
++
+image::images/ignite-Integration-SetBodyJS.png[]
+
+. Click on the *Add a connection* after the *Set Body JS* step.
+. Select *Set Header*.
+. Add the following values:
+.. *Header name:* Connection
+.. *Header value:* close
++
+image::images/ignite-integration-setHeader.png[]
+
+. Select *Driver API*.
+. Select *Retrieve a Driver resource.*
++
+image::images/ignite-Integration-DriverAPI.png[]
+
+. Add a connection after *Driver API*.
+
+. Select *RHDM-InsuranceQuoting.*
+
+. Select the only available action.
+
+. Click on orange circle with a warning icon inside on the top of the *RHDM-InsuranceQuoting* connection.
+
+. Click on the *Add a data mapping step* link.
++
+image::images/ignite-Integration-RHDMDataMapping.png[]
+
+. Create the following constants:
++
+.Constants
+[options="header"]
+|=======================
+| Value | Type 
+| quoting | String 
+| quote1 | String 
+| 0 | Integer 
+| true | Boolean 
+| ksession | String 
+|=======================
+
+. Perform the following mappings:
++
+.Mappings
+[options="header"]
+|=======================
+| Source | Target 
+| Contants -&gt; quoting | parameters -&gt; id 
+| Contants -&gt; ksession | body -&gt; lookup 
+| Contants -&gt; quote1 | body -&gt; commands -&gt; insert -&gt; out-identifier 
+| Contants -&gt; true | body -&gt; commands -&gt; insert -&gt; return-object 
+| Contants -&gt; 0 | body -&gt; commands -&gt; insert -&gt; object -&gt; com.redhat.insurancequoting.Quote -&gt; price 
+|=======================
+
+. It should look like this:
++
+image::images/ignite-integration-RHDMDataMapper.png[]
+
+. Perform the following mappings:
++
+.Mappings
+[options="header"]
+|=======================
+| Source | Target 
+| QuoteRequest -&gt; driver -&gt; age | body -&gt; commands -&gt; insert -&gt; object -&gt; com.redhat.insurancequoting.Quote -&gt; driver -&gt; age 
+| QuoteRequest -&gt; driver -&gt; firstName | body -&gt; commands -&gt; insert -&gt; object -&gt; com.redhat.insurancequoting.Quote -&gt; driver -&gt; firstName 
+| QuoteRequest -&gt; driver -&gt; lastName | body -&gt; commands -&gt; insert -&gt; object -&gt; com.redhat.insurancequoting.Quote -&gt; driver -&gt; lastName 
+| QuoteRequest -&gt; driver -&gt; validLicense | body -&gt; commands -&gt; insert -&gt; object -&gt; com.redhat.insurancequoting.Quote -&gt; driver -&gt; validLicense 
+| QuoteRequest -&gt; vehicle -&gt; licensePlate | body -&gt; commands -&gt; insert -&gt; object -&gt; com.redhat.insurancequoting.Quote -&gt; vehicle -&gt; licensePlate 
+| QuoteRequest -&gt; vehicle -&gt; maker | body -&gt; commands -&gt; insert -&gt; object -&gt; com.redhat.insurancequoting.Quote -&gt; vehicle -&gt; maker 
+| QuoteRequest -&gt; vehicle -&gt; mileage | body -&gt; commands -&gt; insert -&gt; object -&gt; com.redhat.insurancequoting.Quote -&gt; vehicle -&gt; mileage 
+| QuoteRequest -&gt; vehicle -&gt; model | body -&gt; commands -&gt; insert -&gt; object -&gt; com.redhat.insurancequoting.Quote -&gt; vehicle -&gt; model 
+| QuoteRequest -&gt; vehicle -&gt; modelYear | body -&gt; commands -&gt; insert -&gt; object -&gt; com.redhat.insurancequoting.Quote -&gt; vehicle -&gt; modelYear 
+| Response -&gt; fines | body -&gt; commands -&gt; insert -&gt; object -&gt; com.redhat.insurancequoting.Quote -&gt; driver -&gt; fines 
+|=======================
+
+. Click on the *Done* button.
++
+image::images/ignite-Integration-RHDMDataMapping2.png[]
+
+. Click on orange circle with a warning icon inside on the top of the *DataShape* connection.
+
+. Click on the *Add a data mapping step* link.
++
+image::images/ignite-Integration-DataShapeDataMapping1.png[]
+
+. Perform the following mapping:  
++
+.Mappings
+[options="header"]
+|=======================
+  | Source | Target     
+  | Response -&gt; result -&gt; execution-results -&gt; results -&gt; value -&gt; com.redhat.insurancequoting.Quote -&gt; price | QuoteResponse -&gt; price 
+|=======================
+
+. Click on the *Done *button.
++
+image::images/ignite-IntegrationDataShapeDataMapping3.png[]
+
+. Add a step *before* the *RHDM-InsuranceQuoting* connection.
++
+image::images/ignite-IntegrationAddRemoveHeaderStep.png[]
+
+. Select *Script*.
+
+. Select *Javascript* as the *Language*.
+
+. Enter the following code as *Script:*
++
+-----
+var obj = JSON.parse(body);
+var fire = {"fire-all-rules": {}};
+obj.body.commands.push(fire);
+exchange.out.headers['Content-Type'] = 'application/json';
+exchange.out.headers['Accept'] = 'application/json';
+exchange.out.body =JSON.stringify(obj);
+-----
+
+. Click on the *Done* button.
+
+. Click on the *Publish* button.
+
+. Enter "*InsuranceQuoting*" as the *Integration Name.*
+
+. Wait for the integration to be deployed (~5min).
+
+. In the terminal where you logged in to OCP, execute the following commands:
++
+-----
+oc project $OCP_USERID-fuse-ignite
+oc expose dc i-insurancequoting --port 8080
+oc expose service i-insurancequoting
+-----
+
+. Find out the route exposed for your integration:
++
+----
+oc get route | grep insurancequoting
+
+----
++
+NOTE: The route will be of the format: http://i-insurancequote-$OCP_USERID-fuse-ignite.apps.$OCP_DOMAIN
+
+=== Test the Integration Route
+
+. You can test if your integration route is working correctly 
+. Send a curl request as below:
++
+----
+ curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/json' -d '{"driver": {"age":20, "firstName": "Pablo", "lastName": "Szuster", "validLicense": true, "driverID": 12345, "id": "5b89722a368c02000199a1e3", "fines":0},  "vehicle": {"maker": "Chevrolet", "model": "Cruze","modelYear": 2017, "mileage": 5000,"licensePlate": "ABC123"}  }' 'http://i-insurance-$OCP_USERID-fuse-ignite.apps.$OCP_DOMAIN/webhook/QuoteAPI'
+
+----
++
+NOTE: Provide a valid *id* of the resource that you have created for your Mock *Driver Service*.
+
+. If your integration route is working correctly, you should see a response as below:
++
+----
+{"price": 1100}
+----
+
+. You can see the log of your route and any errors in the Syndesis Integration Page. Click on the *Activity* tab.
++
+image::images/ignite-integration-analytics.png[]
+
+IMPORTANT: If the integration reports any errors, fix it and retest. 
+
+Congratulations, your Integration Quote API is now set up. Proceed to the next lab.
+

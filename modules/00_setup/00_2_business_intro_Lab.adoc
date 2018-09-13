@@ -15,13 +15,13 @@ They would like the API Manager & Integration to be hosted in a Platform-As-A-Se
 
 They have invited Red Hat & Red Hat partners to showcase a solution for the above. You are to leverage Red Hat's cloud & middleware platforms, & Red Hat's recommended Agile Integration strategy to build a demo that can convince the customer about the ease of use and scalability of the solution. They have an existing QuoteEngine that runs on Red Hat Decision Manager, and have recently migrated to the latest version and hosted on OpenShift Container Platform. This quote engine requires a Driver Verification by using the public API platform from the country's Driving License Authority to determine the validity of the applicant's license and their penalty details. You are allowed to use a mockup of the public service for the demo purposes.
 
-=== Problem Statement
+== Problem Statement
 
 Agile Integration scenario where a Fuse Ignite camel route is used to provide orchestration of 2 backend services, and expose a composite REST API on 3scale. This API is then secured with OAuth2 & OIDC using Red Hat Single Sign On (SSO) server.
 
 Two parts:
 
-==== Backend:
+=== Backend:
 
 2 backend APIs in Insurance domain:
 
@@ -35,18 +35,18 @@ Two parts:
 API Gateway:
 . Expose the composite Quote API through an API Gateway so that the service secured with OAuth2, and allow for access control & monitoring of consumers.
 
-==== Frontend:
+=== Frontend:
 
 A simple web application providing a web interface with an application form for requesting the quote, and showing the response. All communication from frontend consumers needs to flow through the API Gateway.
 
 
-=== Design
+== Design
 
-==== High Level Architecture
+=== High Level Architecture
 
 image::images/api-usecase-hld.jpeg[]
 
-==== API Provider
+=== API Provider
 
 Use Apicurio, Microcks, Fuse Ignite 3scale & SSO.
 
@@ -57,7 +57,7 @@ Use Apicurio, Microcks, Fuse Ignite 3scale & SSO.
 . 3scale API Management Platform - for API access control
 . Red Hat SSO : For Open ID Connect authorization of the consumer accounts.
 
-==== API Consumer
+=== API Consumer
 
 A NodeJS client application that provides a user authentication, and requests the Quote API exposed through 3scale. The message kicks off the backend camel route, which integrates the 2 backend API services and provides the response to the client application.
 
@@ -70,9 +70,11 @@ All the required applications are hosted in a single OCP cluster. The deployment
 
 image::images/Deployment_Diagram.png[]
 
-You are provided an OpenShift cluster with all the required applications pre-installed, and the backend services available. Your task is to create the Integration API, expose it using 3scale, secure it using OIDC & Red Hat Single Sign On, and finally test the API using the API consumer.
+You are provided an OpenShift cluster with all the required applications pre-installed, and the backend services available. 
 
 === Solution
+
+Your task is to create the Integration API, expose it using 3scale, secure it using OIDC & Red Hat Single Sign On, and finally test the API using the API consumer.
 
 You will approach the problem using the following steps:
 

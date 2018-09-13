@@ -9,14 +9,16 @@
 
 In this lab, you will be introduced to the 2 backend APIs, and will seed some sample data to be used for the labs.
 
+image::images/api-usecase-hld-lab1.jpeg[]
+
 .Goals
 
 * Access the Mock *Driver Service* on Microcks
 * Seed and test access to sample data for the mock *Driver Service*
 * Update the *Driver Service* API specification in *Apicurio Studio* 
 * Download the *Swagger* definition of the *Driver Service* API
-* Access the backend *Quote Rules* API on Red Hat Decision Manager
-* Verify API access to the *Quote Rules* API.
+* Access the backend *Insurance Quote Calculation* API on Red Hat Decision Manager
+* Verify API access to the *Insurance Quote Calculation* API.
 
 
 == Mock _Driver Service_
@@ -131,9 +133,12 @@ image::images/apicurio-SaveJSON.png[]
 
 * Save the file to your disk.
 
-=== Test the Quote Rules Service
+== _Insurance Quote Calculation_ Service
 
-. The Quote Rules service is a single instance running in the *rhdm* namespace. The key connection parameters for the Quote Service are:
+=== Introduction
+
+
+. The *Insurance Quote Calculation* service is a single instance running in the *rhdm* namespace. The key connection parameters for the service are:
 +
 .Parameters:
 [options="header"]
@@ -152,9 +157,12 @@ image::images/apicurio-SaveJSON.png[]
 +
 NOTE: The Route for accessing the Rules API is http://quoting-kieserver-rhdm.apps.$OCP_DOMAIN
 
-. You can view the Swagger API of the Rules ervice by accessing the URL: http://quoting-kieserver-rhdm.apps.$OCP_DOMAIN/docs/
+=== Access the *Insurance Quote Calculation* Service
 
-. The Swagger specification for the Quote Rules Service is here: https://raw.githubusercontent.com/gpe-mw-training/rhte-api-as-business-labs/master/services/RHDM-InsuranceQuoting.json
+
+. You can view the Swagger API of the Rules engine by accessing the URL: http://quoting-kieserver-rhdm.apps.$OCP_DOMAIN/docs/
+
+. The Swagger specification for the *Insurance Quote Calculation* Service is here: https://raw.githubusercontent.com/gpe-mw-training/rhte-api-as-business-labs/master/services/RHDM-InsuranceQuoting.json
 
 . Import the Swagger specification above to Apicurio Studio and click on *edit*.
 +
