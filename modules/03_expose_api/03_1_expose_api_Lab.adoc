@@ -131,9 +131,9 @@ image::images/3scale-publishAppPlan.png[]
 . Click on the *add the base URL of your API and save the configuration* button.
 . Enter the Private Base URL, Staging URL & Production URL as configured in the previous labs:
 
-..  *Private Base URL:* http://i-integration-$USERID-fuse-ignite.apps.$OCP_DOMAIN
-..  *Staging URL:* https://$USERID-quote-stage.apps.$OCP_DOMAIN
-..  *Production URL:* https://$USERID-quote-stage.apps.$OCP_DOMAIN
+..  *Private Base URL:* http://i-integration-$OCP_USERNAME-fuse-ignite.apps.$OCP_DOMAIN
+..  *Staging URL:* https://$OCP_USERNAME-quote-stage.apps.$OCP_DOMAIN
+..  *Production URL:* https://$OCP_USERNAME-quote-stage.apps.$OCP_DOMAIN
 
 
 . Expand the *Mapping Rules* section.
@@ -149,7 +149,7 @@ image::images/3scale-quoteAPI.png[]
 . Expand the *Authentication Settings* section.
 . Enter:
 
-.. *OpenID Connect Issuer:* http://3scale-client:<your secret&gt;@$OCP_USERID-unsecured-sso.apps.$OCP_DOMAIN/auth/realms/3scaleRealm
+.. *OpenID Connect Issuer:* http://3scale-client:<your secret&gt;@$OCP_USERNAME-unsecured-sso.apps.$OCP_DOMAIN/auth/realms/3scaleRealm
 
 . Select *HTTP Headers* in the *Credentials Location*
 +
@@ -188,7 +188,7 @@ image::images/3scale-policy-cors.png[]
 .. *Publish:* checked
 . Paste the contents of the *services/QuotingAPI.json* file.
 
-. Correct the *host* property to match the Production URL of your API in 3scale: https://$USERID-quote-stage.apps.$OCP_DOMAIN
+. Correct the *host* property to match the Production URL of your API in 3scale: https://$OCP_USERNAME-quote-stage.apps.$OCP_DOMAIN
 
 . Click on the *Create Service *button.
 
@@ -236,7 +236,7 @@ You can test the OIDC authentication using the following steps:
 . Grab the authentication token for user *user1* and password *password* by logging in to RH SSO.
 +
 ----
-TKN=$(curl -X POST "http://3scale-client:<your secret&gt;@$OCP_USERID-unsecured-sso.apps.$OCP_DOMAIN/auth/realms/3scaleRealm/protocol/openid-connect/token" \
+TKN=$(curl -X POST "http://3scale-client:<your secret&gt;@$OCP_USERNAME-unsecured-sso.apps.$OCP_DOMAIN/auth/realms/3scaleRealm/protocol/openid-connect/token" \
  -H "Content-Type: application/x-www-form-urlencoded" \
  -d "username=user1" \
  -d "password=password" \
@@ -250,7 +250,7 @@ TKN=$(curl -X POST "http://3scale-client:<your secret&gt;@$OCP_USERID-unsecured-
 +
 ----
 
-curl -X POST -k --header 'Content-Type: application/json' --header 'Accept: application/json'  -H "Authorization: Bearer $TKN" -d '{"driver": {"age":20, "firstName": "Pablo", "lastName": "Szuster", "validLicense": true, "driverID": 12345, "id": "5b9639c529085000013857cc", "fines":0},  "vehicle": {"maker": "Chevrolet", "model": "Cruze","modelYear": 2017, "mileage": 5000,"licensePlate": "ABC123"}  }' 'https://$OCP_USERID-quote-prod.apps.$OCP_DOMAIN/webhook/QuoteAPI' 
+curl -X POST -k --header 'Content-Type: application/json' --header 'Accept: application/json'  -H "Authorization: Bearer $TKN" -d '{"driver": {"age":20, "firstName": "Pablo", "lastName": "Szuster", "validLicense": true, "driverID": 12345, "id": "5b9639c529085000013857cc", "fines":0},  "vehicle": {"maker": "Chevrolet", "model": "Cruze","modelYear": 2017, "mileage": 5000,"licensePlate": "ABC123"}  }' 'https://$OCP_USERNAME-quote-prod.apps.$OCP_DOMAIN/webhook/QuoteAPI' 
 ----
 
 . If the authentication is working correctly, you should see a response from the API:

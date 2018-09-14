@@ -80,7 +80,7 @@ source ~/.bashrc
 
 -----
 
-NOTE: Your userid will have the same number as your assigned lab number. For instance, if your lab number is 24, your userid is *user24* to login to OCP.
+NOTE: Your userid for logging on to the OCP server.
 
 == OpenShift Container Platform
 
@@ -157,9 +157,8 @@ Microcks is an open-source communication and runtime tool for developing API ser
 
 More information here: http://microcks.github.io
 
-A single instance of *Microcks* is installed in the OCP cluster. You can access the microcks URL by navigating to the following URL in the browser: http://microcks.apps.${REGION}.${OCP_DOMAIN}
+A single instance of *Microcks* is installed in the OCP cluster. You can access the microcks URL by navigating to the following URL in the browser: http://microcks.apps.$OCP_DOMAIN
 
-NOTE: Here *$REGION* represents the 4 character region code of your OCP instance, and $OCP_DOMAIN represents the domain extension (for RHTE: rhte.opentlc.com).
 
 . Open the microcks URL in a browser. You should be redirected to the login page.
 . Click on *OpenShift v3" login.
@@ -196,9 +195,8 @@ Apicurio studio is an opensource standalone API design studio that can be used t
 More Information here: https://github.com/Apicurio/apicurio-studio
 
 
-A single instance of *Apicurio* is installed in the OCP cluster. You can access the apicurio URL by navigating to the following URL in the browser: http://apicurio-studio.apps.${REGION}.${OCP_DOMAIN}
+A single instance of *Apicurio* is installed in the OCP cluster. You can access the apicurio URL by navigating to the following URL in the browser: http://apicurio-studio.apps.$OCP_DOMAIN
 
-NOTE: Here *$REGION* represents the 4 character region code of your OCP instance, and $OCP_DOMAIN represents the domain extension (for RHTE: rhte.opentlc.com).
 
 . Open the apicurio URL in a browser. You should be redirected to the login page.
 . Click on *OpenShift v3" login.
@@ -223,8 +221,8 @@ image::images/apicurio_home_page.png[]
 
 . You also need to open the following URLs in the same browser window (in different tabs) and accept the HTTPS certificate exception.
 +
-* https://apicurio-studio-ws.apps.${REGION}.${OCP_DOMAIN}
-* https://apicurio-studio-api.apps.${REGION}.${OCP_DOMAIN}
+* https://apicurio-studio-ws.apps.$OCP_DOMAIN
+* https://apicurio-studio-api.apps.$OCP_DOMAIN
 
 
 Congratulations, your Apicurio application is set up correctly. Please keep this window open for use later in the lab.
@@ -236,7 +234,7 @@ Fuse Ignite is part of the Red Hat Fuse 7 release, and is targetted towards citi
 
 An instance of Fuse Ignite has been deployed for your use. You will find a project called *userX-fuse-ignite* wherein your Fuse Ignite is deployed.
 
-. In a browser, open the URL to Fuse Ignite: http://${OCP_USERNAME}-fuse-ignite.apps.${OCP_DOMAIN}
+. In a browser, open the URL to Fuse Ignite: http://$OCP_USERNAME-fuse-ignite.apps.$OCP_DOMAIN
 
 . You will be redirected to the Openshift login page.
 +
@@ -257,10 +255,8 @@ You have been provided with an ephemeral instance of Red Hat Single Sign On (RH 
 
 The RH SSO is deployed in the namespace *userX-sso*. 
 
-. In a browser, open the secure URL to RH SSO: https://${OCP_USERNAME}-sso.apps.${OCP_DOMAIN}
-
+. In a browser, open the secure URL to RH SSO: https://$OCP_USERNAME-sso.apps.$OCP_DOMAIN
 . Click on *Administration console*.
-
 . Login with userid *admin* and password *password*.
 . You should see the default realm *3scaleRealm* configured.
 . Navigate to *Login* tab and select *none* for *Require SSL*. Click on *save*.
@@ -274,7 +270,7 @@ Congratulations, your RH SSO is set up correctly.  Please keep this window open 
 
 === Red Hat 3scale
 
-A Red Hat 3scale API Platform multitenant deployment exists in the lab OCP cluster. A tenant for your use has been created. The admin portal for your tenant is accessible at the URL: https://${OCP_USERNAME}-3scale-mt-admin.apps.${OCP_DOMAIN}
+A Red Hat 3scale API Platform multitenant deployment exists in the lab OCP cluster. A tenant for your use has been created. The admin portal for your tenant is accessible at the URL: https://$OCP_USERNAME-3scale-mt-admin.apps.$OCP_DOMAIN
 
 . In a browser, navigate to the admin portal URL.
 . Accept the certificate exception.
@@ -294,7 +290,7 @@ Both the gateways have been configured to communicate with the backend URL for y
 
 image::images/ocp-userX-gw-dc.png[]
 
-A route for each gateway is set up. The routes for Staging & Production are https://${OCP_USERNAME}-quote-stage.apps.${OCP_DOMAIN} and https://${OCP_USERNAME}-quote-prod.apps.${OCP_DOMAIN} respectively.
+A route for each gateway is set up. The routes for Staging & Production are https://${OCP_USERNAME}-quote-stage.apps.${REGION}.${OCP_DOMAIN} and https://$OCP_USERNAME-quote-prod.apps.$OCP_DOMAIN respectively.
 
 Notice that both the pods are running.
 
