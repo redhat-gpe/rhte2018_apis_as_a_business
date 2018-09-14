@@ -167,6 +167,12 @@ image::images/3scale-QuoteAPI-Policies.png[]
 +
 NOTE: CORS policy has to be enabled in order to provide access to APIDocs 
 
+. Click on *CORS* to expand the options.
+. Ensure the *allow_credentials* option is checked.
++
+image::images/3scale-policy-cors.png[]
+
+. Click on *Submit* button.
 . Click on the *Back to Integration and Configuration* link.
 . Click on the *Promote v.1 to Production* button.
 
