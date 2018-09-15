@@ -221,8 +221,8 @@ image::images/apicurio_home_page.png[]
 
 . You also need to open the following URLs in the same browser window (in different tabs) and accept the HTTPS certificate exception.
 +
-* https://apicurio-studio-ws.apps.$OCP_DOMAIN
-* https://apicurio-studio-api.apps.$OCP_DOMAIN
+* https://apicurio-studio-ws.$OCP_DOMAIN
+* https://apicurio-studio-api.$OCP_DOMAIN
 
 
 Congratulations, your Apicurio application is set up correctly. Please keep this window open for use later in the lab.
@@ -295,6 +295,11 @@ A route for each gateway is set up. The routes for Staging & Production are http
 Notice that both the pods are running.
 
 image::images/ocp-userX-gw-all.png[]
+
+You also need to open the following URLs in the same browser window (in different tabs) and accept the HTTPS certificate exception.
++
+* https://$OCP_USERNAME-quote-stage.$OCP_DOMAIN
+* https://$OCP_USERNAME-quote-prod.$OCP_DOMAIN
 
 Congratulations, your 3scale API Gateway is set up correctly. Please note your staging & production URLs as you will need it later in the labs.
 
