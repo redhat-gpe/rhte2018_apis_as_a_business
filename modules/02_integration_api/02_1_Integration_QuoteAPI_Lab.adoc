@@ -96,7 +96,7 @@ image::images/ignite-ImportAPIConnectorDriver.png[]
 [options="header"]
 |=======================
 | Parameter | Value 
-| *Host* | http://microcks.microcks.svc.cluster.local:8080
+| *Host* | http://microcks.lab-infra.svc.cluster.local:8080
 | *Base URL* | /dynarest/Driver%20Service/1.0/ 
 |=======================
 

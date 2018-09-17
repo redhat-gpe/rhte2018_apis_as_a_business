@@ -215,7 +215,7 @@ image::images/apicurio-login-sso-authorize.png[]
 +
 image::images/apicurio-login-sso-additional.png[]
 
-. Now you should get redirected to the home page of Microcks. Click on *Services*.
+. Now you should get redirected to the home page of Apicurio Studio. 
 +
 image::images/apicurio_home_page.png[]
 
