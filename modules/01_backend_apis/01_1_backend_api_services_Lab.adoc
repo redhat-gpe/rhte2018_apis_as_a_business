@@ -47,7 +47,7 @@ image::images/microcks-resources.png[]
 +
 ----
 curl -X POST \
-  http://microcks.apps.$OCP_DOMAIN/dynarest/Driver%20Service/1.0/Driver/ \
+  http://microcks.$OCP_SUFFIX/dynarest/Driver%20Service/1.0/Driver/ \
   -H 'content-type: application/json' \
   -d '{"driverID": 100, "firstName": "Jack", "lastName": "Ryan", "fines": 3, "validLicense": true}'
 
@@ -68,7 +68,7 @@ image::images/microcks-resources-id.png[]
 . In a terminal window, you can execute a *curl* command to GET your resource:
 +
 ----
-$ curl http://microcks.apps.$OCP_DOMAIN/dynarest/Driver%20Service/1.0/Driver/5b89722a368c02000199a1e3
+$ curl http://microcks.$OCP_SUFFIX/dynarest/Driver%20Service/1.0/Driver/5b89722a368c02000199a1e3
 { "driverID" : 333, "firstName" : "Albert", "lastName" : "Johson", "fines" : 4, "validLicense" : false, "id" : "5b89722a368c02000199a1e3" }
 
 ----
@@ -155,12 +155,12 @@ image::images/apicurio-SaveJSON.png[]
   | CONTEXT_DIR | services/InsuranceQuoting | Source code folder in git repo
 |=======================
 +
-NOTE: The Route for accessing the Rules API is http://quoting-kieserver-rhdm.apps.$OCP_DOMAIN
+NOTE: The Route for accessing the Rules API is http://quoting-kieserver-rhdm.$OCP_SUFFIX
 
 === Access the *Insurance Quote Calculation* Service
 
 
-. You can view the Swagger API of the Rules engine by accessing the URL: http://quoting-kieserver-rhdm.apps.$OCP_DOMAIN/docs/
+. You can view the Swagger API of the Rules engine by accessing the URL: http://quoting-kieserver-rhdm.$OCP_SUFFIX/docs/
 
 . The Swagger specification for the *Insurance Quote Calculation* Service is here: https://raw.githubusercontent.com/gpe-mw-training/rhte-api-as-business-labs/master/services/RHDM-InsuranceQuoting.json
 

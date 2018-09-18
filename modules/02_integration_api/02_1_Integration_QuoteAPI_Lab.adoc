@@ -96,7 +96,7 @@ image::images/ignite-ImportAPIConnectorDriver.png[]
 [options="header"]
 |=======================
 | Parameter | Value 
-| *Host* | http://microcks.lab-infra.svc.cluster.local:8080
+| *Host* | http://microcks.api-lifecycle.svc.cluster.local:8080
 | *Base URL* | /dynarest/Driver%20Service/1.0/ 
 |=======================
 
@@ -355,7 +355,7 @@ image::images/ignite-integration-summary.png[]
 . In the terminal where you logged in to OCP, execute the following commands:
 +
 -----
-oc project $OCP_USERID-fuse-ignite
+oc project $OCP_USERNAME-fuse-ignite
 oc expose dc i-insurancequoting --port 8080
 oc expose service i-insurancequoting
 -----
@@ -367,7 +367,7 @@ oc get route | grep insurancequoting
 
 ----
 +
-NOTE: The route will be of the format: http://i-insurancequote-$OCP_USERID-fuse-ignite.apps.$OCP_DOMAIN
+NOTE: The route will be of the format: http://i-insurancequote-$OCP_USERNAME-fuse-ignite.$OCP_SUFFIX
 
 === Test the Integration Route
 
@@ -375,7 +375,7 @@ NOTE: The route will be of the format: http://i-insurancequote-$OCP_USERID-fuse-
 . Send a curl request as below:
 +
 ----
- curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/json' -d '{"driver": {"age":20, "firstName": "Pablo", "lastName": "Szuster", "validLicense": true, "driverID": 12345, "id": "5b89722a368c02000199a1e3", "fines":0},  "vehicle": {"maker": "Chevrolet", "model": "Cruze","modelYear": 2017, "mileage": 5000,"licensePlate": "ABC123"}  }' 'http://i-insurance-$OCP_USERID-fuse-ignite.apps.$OCP_DOMAIN/webhook/QuoteAPI'
+ curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/json' -d '{"driver": {"age":20, "firstName": "Pablo", "lastName": "Szuster", "validLicense": true, "driverID": 12345, "id": "5b89722a368c02000199a1e3", "fines":0},  "vehicle": {"maker": "Chevrolet", "model": "Cruze","modelYear": 2017, "mileage": 5000,"licensePlate": "ABC123"}  }' 'http://i-insurance-$OCP_USERNAME-fuse-ignite.$OCP_SUFFIX/webhook/QuoteAPI'
 
 ----
 +

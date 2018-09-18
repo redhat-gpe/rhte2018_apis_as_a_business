@@ -45,7 +45,7 @@ image::Deployment_Diagram.png[]
   | Variable | Value | Remarks
   | REGION | TBD | GUID of the server to be provided.
   | OCP_DOMAIN |  $REGION.rhte.opentlc.com | 
-  | PROJECT_NAME_INFRA | lab-infra       | Project for deploying multitenant apps  (SSO, Microcks & Apicurio) (User: opentlc-mgr)
+  | PROJECT_NAME_INFRA | api-lifecycle       | Project for deploying multitenant API design apps  (SSO, Microcks & Apicurio) (User: opentlc-mgr)
   | PROJECT_NAME_3SCALE | 3scale-mt-adm0 | Project for deploying multi-tenant 3scale (User: user102)
   | PROJECT_NAME_RHDM | rhdm | Project for deploying common instance of Decision Manager (User: opentlc-mgr)
   | PROJECT_NAME_IGNITE | userX-fuse-ignite | Project for each user's individual ignite app

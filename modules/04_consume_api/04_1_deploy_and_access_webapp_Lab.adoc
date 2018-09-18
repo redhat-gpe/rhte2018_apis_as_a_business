@@ -59,11 +59,11 @@ image::images/3scale-dev-portal-app-credentials.png[]
 [options="header"]
 |=======================
 | Parameter | Value 
-| *Application Hostname* | $OCP_UERNAME-quote-client.apps.$OCP_DOMAIN
-| *Quotes API URL* | https://$OCP_USERNAME-3scale-mt-admin.apps.$OCP_DOMAIN/swagger/spec/quotes.json
+| *Application Hostname* | $OCP_UERNAME-quote-client.$OCP_SUFFIX
+| *Quotes API URL* | https://$OCP_USERNAME-3scale-mt-admin.$OCP_SUFFIX/swagger/spec/quotes.json
 | *Quotes API Client Secret* | &lt;Paste Client ID from 3scale&gt; 
 | *Quotes API ClientID* | &lt;Paste Client Secret from 3scale&gt; 
-| *RH Single Sign-On URL* | [http://sso-unsecured.apps.$OCP_DOMAIN/auth) 
+| *RH Single Sign-On URL* | [http://$OCP_USERNAME-sso-unsecured.$OCP_SUFFIX/auth) 
 |=======================
 
 . Click on the *Create* button.
@@ -73,14 +73,14 @@ image::images/quoting-app-deploy.png[]
 
 == Access Client Web Application
 
-. Go to http://$OCP_UERNAME-quote-client.apps.$OCP_DOMAIN
+. Go to http://$OCP_UERNAME-quote-client.$OCP_SUFFIX
 . Notice that you are redirected to the SSO login page.
 . Login with the userid & password which you created in the previous lab. (*user1/password*)
 +
 image::images/quote-app-login-form.png[]
 
 . Click on the *Start* button.
-. Open a new browser tab and go to http://microcks.apps.$OCP_DOMAIN/#/services
+. Open a new browser tab and go to http://microcks.$OCP_SUFFIX/#/services
 . Use a valid resource id from the *Microcks* resources in the *Driver ID* field.
 . Complete the form with any data of your choosing.
 +

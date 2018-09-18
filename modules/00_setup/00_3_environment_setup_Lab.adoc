@@ -74,7 +74,7 @@ echo "export OCP_USERNAME=userX" >> ~/.bashrc
 echo "export OCP_PASSWD=r3dh4t1!" >> ~/.bashrc
 echo "export OCP_REGION=`echo $HOSTNAME | cut -d'.' -f2`" >> ~/.bashrc
 echo "export OCP_DOMAIN=$OCP_REGION.rhte.opentlc.com" >> ~/.bashrc
-
+echo "export OCP_SUFFIX=apps.$OCP_DOMAIN" >> ~/.bashrc
 
 source ~/.bashrc
 
@@ -157,7 +157,7 @@ Microcks is an open-source communication and runtime tool for developing API ser
 
 More information here: http://microcks.github.io
 
-A single instance of *Microcks* is installed in the OCP cluster. You can access the microcks URL by navigating to the following URL in the browser: http://microcks.apps.$OCP_DOMAIN
+A single instance of *Microcks* is installed in the OCP cluster. You can access the microcks URL by navigating to the following URL in the browser: http://microcks.$OCP_SUFFIX
 
 
 . Open the microcks URL in a browser. You should be redirected to the login page.
@@ -195,7 +195,7 @@ Apicurio studio is an opensource standalone API design studio that can be used t
 More Information here: https://github.com/Apicurio/apicurio-studio
 
 
-A single instance of *Apicurio* is installed in the OCP cluster. You can access the apicurio URL by navigating to the following URL in the browser: http://apicurio-studio.apps.$OCP_DOMAIN
+A single instance of *Apicurio* is installed in the OCP cluster. You can access the apicurio URL by navigating to the following URL in the browser: http://apicurio-studio.$OCP_SUFFIX
 
 
 . Open the apicurio URL in a browser. You should be redirected to the login page.
@@ -221,8 +221,8 @@ image::images/apicurio_home_page.png[]
 
 . You also need to open the following URLs in the same browser window (in different tabs) and accept the HTTPS certificate exception.
 +
-* https://apicurio-studio-ws.$OCP_DOMAIN
-* https://apicurio-studio-api.$OCP_DOMAIN
+* https://apicurio-studio-ws.$OCP_SUFFIX
+* https://apicurio-studio-api.$OCP_SUFFIX
 
 
 Congratulations, your Apicurio application is set up correctly. Please keep this window open for use later in the lab.
@@ -234,7 +234,7 @@ Fuse Ignite is part of the Red Hat Fuse 7 release, and is targetted towards citi
 
 An instance of Fuse Ignite has been deployed for your use. You will find a project called *userX-fuse-ignite* wherein your Fuse Ignite is deployed.
 
-. In a browser, open the URL to Fuse Ignite: http://$OCP_USERNAME-fuse-ignite.apps.$OCP_DOMAIN
+. In a browser, open the URL to Fuse Ignite: http://$OCP_USERNAME-fuse-ignite.$OCP_SUFFIX
 
 . You will be redirected to the Openshift login page.
 +
@@ -255,7 +255,7 @@ You have been provided with an ephemeral instance of Red Hat Single Sign On (RH 
 
 The RH SSO is deployed in the namespace *userX-sso*. 
 
-. In a browser, open the secure URL to RH SSO: https://$OCP_USERNAME-sso.apps.$OCP_DOMAIN
+. In a browser, open the secure URL to RH SSO: https://$OCP_USERNAME-sso.$OCP_SUFFIX
 . Click on *Administration console*.
 . Login with userid *admin* and password *password*.
 . You should see the default realm *3scaleRealm* configured.
@@ -270,7 +270,7 @@ Congratulations, your RH SSO is set up correctly.  Please keep this window open 
 
 === Red Hat 3scale
 
-A Red Hat 3scale API Platform multitenant deployment exists in the lab OCP cluster. A tenant for your use has been created. The admin portal for your tenant is accessible at the URL: https://$OCP_USERNAME-3scale-mt-admin.apps.$OCP_DOMAIN
+A Red Hat 3scale API Platform multitenant deployment exists in the lab OCP cluster. A tenant for your use has been created. The admin portal for your tenant is accessible at the URL: https://$OCP_USERNAME-3scale-mt-admin.$OCP_SUFFIX
 
 . In a browser, navigate to the admin portal URL.
 . Accept the certificate exception.
@@ -290,7 +290,7 @@ Both the gateways have been configured to communicate with the backend URL for y
 
 image::images/ocp-userX-gw-dc.png[]
 
-A route for each gateway is set up. The routes for Staging & Production are https://${OCP_USERNAME}-quote-stage.apps.${REGION}.${OCP_DOMAIN} and https://$OCP_USERNAME-quote-prod.apps.$OCP_DOMAIN respectively.
+A route for each gateway is set up. The routes for Staging & Production are https://${OCP_USERNAME}-quote-stage.$OCP_SUFFIX and https://$OCP_USERNAME-quote-prod.$OCP_SUFFIX respectively.
 
 Notice that both the pods are running.
 
@@ -298,8 +298,8 @@ image::images/ocp-userX-gw-all.png[]
 
 You also need to open the following URLs in the same browser window (in different tabs) and accept the HTTPS certificate exception.
 +
-* https://$OCP_USERNAME-quote-stage.$OCP_DOMAIN
-* https://$OCP_USERNAME-quote-prod.$OCP_DOMAIN
+* https://$OCP_USERNAME-quote-stage.$OCP_SUFFIX
+* https://$OCP_USERNAME-quote-prod.$OCP_SUFFIX
 
 Congratulations, your 3scale API Gateway is set up correctly. Please note your staging & production URLs as you will need it later in the labs.
 
