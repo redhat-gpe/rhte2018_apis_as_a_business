@@ -27,10 +27,20 @@ There are certain extensions that are required to be installed in Syndesis in or
 . *ManageHeaders* - to set the or remove an header of the exchange.
 . *Script* - to add dynamic scripting to Syndesis using either `groovy` or `javascript`.
 
+=== Delete Webhook Extension
+
+A *Webhook* extension is now included as part of Syndesis installation. This extension does not work correctly for the lab, hence we delete it, and import the custom extension below.
+
+. Open the Fuse Ignite (Syndesis) web console on the browser.
+. Click on the *Connections*.
+. Click on the *...* for *Webhook* and select *Delete*.
+. Confirm the *Delete* action.
+
+
 === Import Extensions
 
 . Open the Fuse Ignite (Syndesis) web console on the browser.
-. Click on the *Customizations* tab.
+. Click on *Customizations*.
 . Click on the *Extensions* tab.
 . Click on the *Import Extension* button.
 +
@@ -63,6 +73,11 @@ image::images/ignite-CreateDataShapeConnection.png[]
 . Click on the *Create Connection* button.
 
 . Select *Webhook*.
++
+NOTE: There will be two *Webhook* connections. Choose the one with decription *_Extension Connector to expose a Webhook on Syndesis_*.
++
+image::images/ignite-connection-add-webhook.png[]
+
 . Enter *WebhookExt* as *Connection Name*.
 . Click on the *Create* button.
 
