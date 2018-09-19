@@ -46,7 +46,7 @@ image::Deployment_Diagram.png[]
   | REGION | TBD | GUID of the server to be provided.
   | OCP_DOMAIN |  $REGION.rhte.opentlc.com | 
   | PROJECT_NAME_INFRA | api-lifecycle       | Project for deploying multitenant API design apps  (SSO, Microcks & Apicurio) (User: opentlc-mgr)
-  | PROJECT_NAME_3SCALE | 3scale-mt-adm0 | Project for deploying multi-tenant 3scale (User: user102)
+  | PROJECT_NAME_3SCALE | 3scale-mt-opentlc-mgr | Project for deploying multi-tenant 3scale (User: user102)
   | PROJECT_NAME_RHDM | rhdm | Project for deploying common instance of Decision Manager (User: opentlc-mgr)
   | PROJECT_NAME_IGNITE | userX-fuse-ignite | Project for each user's individual ignite app
   | PROJECT_NAME_NODEJS | userX-client | Project for each user's client Node JS application
@@ -81,7 +81,7 @@ https://github.com/sborenst/ansible_agnostic_deployer/tree/development/ansible/r
   | END_TENANT | 10 | to create 10 tenants, can be changed for production environment. 
   | REGION | GUID of the server | This is the GUID of the server
   | OCP_DOMAIN |  $REGION.rhte.opentlc.com | 
-  | GUID | adm0 | The unique project name for the 3scale AMP project.
+  | GUID | opentlc-mgr | The unique project name for the 3scale AMP project.
   | CREATE_GWS_WITH_EACH_TENANT | true | create default stage & prod routes for each tenant gateway.
 |=======================
 +
@@ -101,7 +101,7 @@ CREATE_GWS_WITH_EACH_TENANT=true
 WORKLOAD="ocp-workload-3scale-multitenant"
 REGION=`oc whoami --show-server | cut -d'.' -f 2`
 OCP_DOMAIN=$REGION.rhte.opentlc.com
-GUID=adm0
+GUID=opentlc-mgr
 
 
 ansible-playbook -i localhost, -c local ./configs/ocp-workloads/ocp-workload.yml \

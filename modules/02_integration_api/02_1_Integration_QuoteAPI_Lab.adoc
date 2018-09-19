@@ -74,7 +74,7 @@ image::images/ignite-CreateDataShapeConnection.png[]
 
 . Select *Webhook*.
 +
-NOTE: There will be two *Webhook* connections. Choose the one with decription *_Extension Connector to expose a Webhook on Syndesis_*.
+NOTE: There will be two *Webhook* connections. Choose the one with description *_Extension Connector to expose a Webhook on Syndesis_*.
 +
 image::images/ignite-connection-add-webhook.png[]
 
