@@ -240,7 +240,7 @@ image::images/ignite-CreateDataShapeDefinitio.png[]
 +
 image::images/ignite-Integration-SetBodyJS.png[]
 
-. Click on the *Add a connection* after the *Set Body JS* step.
+. Click on the *Add a step* after the *Set Body JS* step.
 . Select *Set Header*.
 . Add the following values:
 .. *Header name:* Connection
@@ -248,6 +248,7 @@ image::images/ignite-Integration-SetBodyJS.png[]
 +
 image::images/ignite-integration-setHeader.png[]
 
+. Click on *Add a connection*.
 . Select *Driver API*.
 . Select *Retrieve a Driver resource.*
 +
