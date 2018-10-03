@@ -30,10 +30,11 @@ Two parts:
 
 1 composite API:
 
-. Expose a REST API getting a Quote Request, enrich the request with Driver Verification details, and generate an Insurance Quote response.
+- Expose a REST API getting a Quote Request, enrich the request with Driver Verification details, and generate an Insurance Quote response.
 
 API Gateway:
-. Expose the composite Quote API through an API Gateway so that the service secured with OAuth2, and allow for access control & monitoring of consumers.
+
+- Expose the composite Quote API through an API Gateway so that the service secured with OAuth2, and allow for access control & monitoring of consumers.
 
 === Frontend:
 
@@ -61,7 +62,7 @@ Use Apicurio, Microcks, Fuse Ignite 3scale & SSO.
 
 A NodeJS client application that provides a user authentication, and requests the Quote API exposed through 3scale. The message kicks off the backend camel route, which integrates the 2 backend API services and provides the response to the client application.
 
-. NodeJS Application: https://github.com/gpe-mw-training/rhte-api-as-business-labs/tree/master/services/InsuranceQuoting
+- NodeJS Application: https://github.com/gpe-mw-training/rhte-api-as-business-labs/tree/master/services/InsuranceQuoting
 
 
 === Infrastructure
