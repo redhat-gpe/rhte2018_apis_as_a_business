@@ -36,8 +36,8 @@ image::images/sso-setupRealm.png[]
 image::images/ssosetup-CreateClient.png[]
 
 . Enter the following values:
-. *Client ID*: 3scale-client
-. *Client Protocol*: openid-connect
+.. *Client ID*: 3scale-client
+.. *Client Protocol*: openid-connect
 . Click on the *Save* button.
 +
 image::images/sso-setup-Client2.png[]
@@ -121,7 +121,7 @@ image::images/3scale-appPlan.png[]
 
 . Enter the following values:
 .. *Name:* QuotePlan
-.. *System Name:* quote\_plan
+.. *System Name:* quote_plan
 . Click on the *Create Application Plan* button.
 . Click on the *Publish* link.
 +
@@ -133,7 +133,7 @@ image::images/3scale-publishAppPlan.png[]
 
 ..  *Private Base URL:* http://i-integration-$OCP_USERNAME-fuse-ignite.$OCP_SUFFIX
 ..  *Staging URL:* https://$OCP_USERNAME-quote-stage.$OCP_SUFFIX
-..  *Production URL:* https://$OCP_USERNAME-quote-stage.$OCP_SUFFIX
+..  *Production URL:* https://$OCP_USERNAME-quote-prod.$OCP_SUFFIX
 
 
 . Expand the *Mapping Rules* section.
@@ -142,14 +142,14 @@ image::images/3scale-publishAppPlan.png[]
 
 . Set the *Verb* to *POST*
 
-. Set the *Pattern *to */webhook/quoteAPI*
+. Set the *Pattern* to */webhook/QuoteAPI*
 +
 image::images/3scale-quoteAPI.png[]
 
 . Expand the *Authentication Settings* section.
 . Enter:
 
-.. *OpenID Connect Issuer:* http://3scale-client:<your secret&gt;@$OCP_USERNAME-unsecured-sso.$OCP_SUFFIX/auth/realms/3scaleRealm
+.. *OpenID Connect Issuer:* http://3scale-client:<your secret&gt;@$OCP_USERNAME-sso-unsecured.$OCP_SUFFIX/auth/realms/3scaleRealm
 
 . Select *HTTP Headers* in the *Credentials Location*
 +
@@ -181,16 +181,16 @@ image::images/3scale-policy-cors.png[]
 
 . Click on the *APIs* tab.
 . Click on the *ActiveDocs* tab.
-. Click on *Creae a new spec*.
+. Click on *Create a new spec*.
 . Enter the following values:
 .. *Name:* Quotes
 .. *System name:* quotes
 .. *Publish:* checked
 . Paste the contents of the *services/QuotingAPI.json* file.
 
-. Correct the *host* property to match the Production URL of your API in 3scale: https://$OCP_USERNAME-quote-stage.$OCP_SUFFIX
+. Correct the *host* property to match the Production URL of your API in 3scale: https://$OCP_USERNAME-quote-prod.$OCP_SUFFIX
 
-. Click on the *Create Service *button.
+. Click on the *Create Service* button.
 
 === User & Client Management
 
@@ -204,7 +204,7 @@ image::images/3scale-policy-cors.png[]
 +
 image::images/3scale-createApp.png[]
 
-. Make sure *Application Plan *is set to *QuotePlan*.
+. Make sure *Application Plan* is set to *QuotePlan*.
 . Enter *QuoteApp* as *Name..*
 . Enter *Quoting Application* as *Description..*
 . Click on the *Create Application* button.
@@ -217,8 +217,8 @@ image::images/3scale-createApp2.png[]
 +
 image::images/3scale-app-redirecturl.png[]
 
-. Go back to the RH-SSO console 
-. Make sure the *3scaleRealm *realm is selected.
+. Go back to the RH-SSO console
+. Make sure the *3scaleRealm* realm is selected.
 . Click on the *Clients* tab.
 . Click on the *Client ID* generated in 3scale.
 . Scroll down to *Web Origins*.
@@ -236,7 +236,7 @@ You can test the OIDC authentication using the following steps:
 . Grab the authentication token for user *user1* and password *password* by logging in to RH SSO.
 +
 ----
-TKN=$(curl -X POST "http://3scale-client:<your secret&gt;@$OCP_USERNAME-unsecured-sso.$OCP_SUFFIX/auth/realms/3scaleRealm/protocol/openid-connect/token" \
+TKN=$(curl -X POST "http://3scale-client:<your secret&gt;@$OCP_USERNAME-sso-unsecured.$OCP_SUFFIX/auth/realms/3scaleRealm/protocol/openid-connect/token" \
  -H "Content-Type: application/x-www-form-urlencoded" \
  -d "username=user1" \
  -d "password=password" \
