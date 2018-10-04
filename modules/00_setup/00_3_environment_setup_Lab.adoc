@@ -136,8 +136,8 @@ NOTE: Replace userX with your actual userid.
 
 Notice that you are provided with access to the following OpenShift projects:
 
-. *lab-infra*
-. *rhdm*
+. api-lifecycle
+. rhdm
 . userX-gw
 . userX-sso
 . userX-fuse-ignite
@@ -145,7 +145,7 @@ Notice that you are provided with access to the following OpenShift projects:
 
 image::images/ocp-projects-list.png[]
 
-NOTE: The first 2 projects: lab_infra & rhdm are global projects for which view access has been provided to you. The projects with your userId prefix are provisioned for your exclusive use.
+NOTE: The first 2 projects: api-lifecycle & rhdm are global projects for which view access has been provided to you. The projects with your userId prefix are provisioned for your exclusive use.
 
 == Login to Applications
 
@@ -161,7 +161,7 @@ A single instance of *Microcks* is installed in the OCP cluster. You can access 
 
 
 . Open the microcks URL in a browser. You should be redirected to the login page.
-. Click on *OpenShift v3" login.
+. Click on *OpenShift v3* login.
 +
 image::images/microcks-login-page.png[]
 
@@ -185,7 +185,7 @@ image::images/microcks_home_page.png[]
 +
 image::images/microcks-driver-service.png[]
 
-Congratulations, your Mickrocks application is set up correctly. Please keep this window open for use later in the lab.
+Congratulations, your Microcks application is set up correctly. Please keep this window open for use later in the lab.
 
 
 === Apicurio
@@ -199,7 +199,7 @@ A single instance of *Apicurio* is installed in the OCP cluster. You can access 
 
 
 . Open the apicurio URL in a browser. You should be redirected to the login page.
-. Click on *OpenShift v3" login.
+. Click on *OpenShift v3* login.
 +
 image::images/apicurio-login-page.png[]
 
@@ -230,7 +230,7 @@ Congratulations, your Apicurio application is set up correctly. Please keep this
 
 === Fuse Ignite
 
-Fuse Ignite is part of the Red Hat Fuse 7 release, and is targetted towards citizen developers. Ignite provides a web browser interface that lets you integrate two or more different applications or services without writing code. 
+Fuse Ignite is part of the Red Hat Fuse 7 release, and is targeted towards citizen developers. Ignite provides a web browser interface that lets you integrate two or more different applications or services without writing code.
 
 An instance of Fuse Ignite has been deployed for your use. You will find a project called *userX-fuse-ignite* wherein your Fuse Ignite is deployed.
 
@@ -270,7 +270,7 @@ Congratulations, your RH SSO is set up correctly.  Please keep this window open 
 
 === Red Hat 3scale
 
-A Red Hat 3scale API Platform multitenant deployment exists in the lab OCP cluster. A tenant for your use has been created. The admin portal for your tenant is accessible at the URL: https://$OCP_USERNAME-3scale-mt-opentlc-mgr-admin.$OCP_SUFFIX
+A Red Hat 3scale API Platform multitenant deployment exists in the lab OCP cluster. A tenant for your use has been created. The admin portal for your tenant is accessible at the URL: https://$OCP_USERNAME-3scale-mt-api0-admin.$OCP_SUFFIX
 
 . In a browser, navigate to the admin portal URL.
 . Accept the certificate exception.
@@ -297,7 +297,7 @@ Notice that both the pods are running.
 image::images/ocp-userX-gw-all.png[]
 
 You also need to open the following URLs in the same browser window (in different tabs) and accept the HTTPS certificate exception.
-+
+
 * https://$OCP_USERNAME-quote-stage.$OCP_SUFFIX
 * https://$OCP_USERNAME-quote-prod.$OCP_SUFFIX
 

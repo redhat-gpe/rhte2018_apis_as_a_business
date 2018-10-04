@@ -65,7 +65,7 @@ image::images/ignite-ImportedExtensions.png[]
 . Click on the *Create Connection* button.
 
 . Select *DataShape Connector*.
-. Enter *DataShape. as *Connection Name*.
+. Enter *DataShape* as *Connection Name*.
 . Click on the *Create* button.
 +
 image::images/ignite-CreateDataShapeConnection.png[]
@@ -85,7 +85,7 @@ Congratulations, the syndesis extensions are now imported successfully.
 
 == Syndesis Configuration - Connectors
 
-We now need to configure the 2 backend APIs: *Driver Service. and *Insurance Quote Calculation. service as API connectors in Syndesis.
+We now need to configure the 2 backend APIs - Driver Service and Insurance Quote Calculation service -  as API connectors in Syndesis.
 
 === Create API Connections
 
@@ -154,8 +154,8 @@ image::images/ignite-CreateAPIConnectionDriver-2.png[]
 . Click on the *Create Connection* button.
 . Select *Insurance Quoting*.
 . Enter the following values:
-. *Username:* user
-. *Password:* password
+* *Username:* user
+* *Password:* password
 . Click on the *Next* button
 +
 image::images/ignite-CreateAPIConnectionRHDM2.png[]
@@ -224,7 +224,7 @@ image::images/ignite-DefineWebhookDatashape.png[]
 
 . Enter *QuoteResponse* as *Data Type Name*.
 
-. Click on the *Done *button*.
+. Click on the *Done* button.
 +
 image::images/ignite-CreateDataShapeDefinitio.png[]
 
@@ -236,7 +236,7 @@ image::images/ignite-CreateDataShapeDefinitio.png[]
 '{"parameters":{"id": "' + JSON.parse(exchange.in.getBody(java.lang.String.class)).driver.id + '"}}'
 -----
 
-. Click on the *Done *button.
+. Click on the *Done* button.
 +
 image::images/ignite-Integration-SetBodyJS.png[]
 
@@ -333,7 +333,7 @@ image::images/ignite-Integration-DataShapeDataMapping1.png[]
   | Response -&gt; result -&gt; execution-results -&gt; results -&gt; value -&gt; com.redhat.insurancequoting.Quote -&gt; price | QuoteResponse -&gt; price 
 |=======================
 
-. Click on the *Done *button.
+. Click on the *Done* button.
 +
 image::images/ignite-IntegrationDataShapeDataMapping3.png[]
 
@@ -383,7 +383,7 @@ oc get route | grep insurancequoting
 
 ----
 +
-NOTE: The route will be of the format: http://i-insurancequote-$OCP_USERNAME-fuse-ignite.$OCP_SUFFIX
+NOTE: The route will be of the format: http://i-insurancequoting-$OCP_USERNAME-fuse-ignite.$OCP_SUFFIX
 
 === Test the Integration Route
 
@@ -391,7 +391,7 @@ NOTE: The route will be of the format: http://i-insurancequote-$OCP_USERNAME-fus
 . Send a curl request as below:
 +
 ----
- curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/json' -d '{"driver": {"age":20, "firstName": "Pablo", "lastName": "Szuster", "validLicense": true, "driverID": 12345, "id": "5b89722a368c02000199a1e3", "fines":0},  "vehicle": {"maker": "Chevrolet", "model": "Cruze","modelYear": 2017, "mileage": 5000,"licensePlate": "ABC123"}  }' 'http://i-insurance-$OCP_USERNAME-fuse-ignite.$OCP_SUFFIX/webhook/QuoteAPI'
+ curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/json' -d '{"driver": {"age":20, "firstName": "Pablo", "lastName": "Szuster", "validLicense": true, "driverID": 12345, "id": "5b89722a368c02000199a1e3", "fines":0},  "vehicle": {"maker": "Chevrolet", "model": "Cruze","modelYear": 2017, "mileage": 5000,"licensePlate": "ABC123"}  }' 'http://i-insurancequoting-$OCP_USERNAME-fuse-ignite.$OCP_SUFFIX/webhook/QuoteAPI'
 
 ----
 +
