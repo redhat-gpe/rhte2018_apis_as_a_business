@@ -131,7 +131,7 @@ image::images/3scale-publishAppPlan.png[]
 . Click on the *add the base URL of your API and save the configuration* button.
 . Enter the Private Base URL, Staging URL & Production URL as configured in the previous labs:
 
-..  *Private Base URL:* http://i-integration-$OCP_USERNAME-fuse-ignite.$OCP_SUFFIX
+..  *Private Base URL:* http://i-insurancequoting-$OCP_USERNAME-fuse-ignite.$OCP_SUFFIX
 ..  *Staging URL:* https://$OCP_USERNAME-quote-stage.$OCP_SUFFIX
 ..  *Production URL:* https://$OCP_USERNAME-quote-prod.$OCP_SUFFIX
 
@@ -149,7 +149,7 @@ image::images/3scale-quoteAPI.png[]
 . Expand the *Authentication Settings* section.
 . Enter:
 
-.. *OpenID Connect Issuer:* http://3scale-client:<your secret&gt;@$OCP_USERNAME-sso-unsecured.$OCP_SUFFIX/auth/realms/3scaleRealm
+.. *OpenID Connect Issuer:* http://3scale-client:<3scale-client secret>@$OCP_USERNAME-sso-unsecured.$OCP_SUFFIX/auth/realms/3scaleRealm
 
 . Select *HTTP Headers* in the *Credentials Location*
 +
@@ -205,8 +205,8 @@ image::images/3scale-policy-cors.png[]
 image::images/3scale-createApp.png[]
 
 . Make sure *Application Plan* is set to *QuotePlan*.
-. Enter *QuoteApp* as *Name..*
-. Enter *Quoting Application* as *Description..*
+. Enter *QuoteApp* as *Name*.
+. Enter *Quoting Application* as *Description*.
 . Click on the *Create Application* button.
 +
 image::images/3scale-createApp2.png[]
@@ -221,11 +221,12 @@ image::images/3scale-app-redirecturl.png[]
 . Make sure the *3scaleRealm* realm is selected.
 . Click on the *Clients* tab.
 . Click on the *Client ID* generated in 3scale.
+. Set *Direct Access Grants Enabled* to ON.
 . Scroll down to *Web Origins*.
 . Enter an "*" .
 . Click on the *Save* button.
 +
-image::images/3scale-rhsso-client-weborigin.png[]
+image::images/3scale-client-edit.png[]
 
 
 === Test 3scale API Configuration
@@ -236,7 +237,7 @@ You can test the OIDC authentication using the following steps:
 . Grab the authentication token for user *user1* and password *password* by logging in to RH SSO.
 +
 ----
-TKN=$(curl -X POST "http://3scale-client:<your secret&gt;@$OCP_USERNAME-sso-unsecured.$OCP_SUFFIX/auth/realms/3scaleRealm/protocol/openid-connect/token" \
+TKN=$(curl -X POST "http://<your client id>:<your client secret>@$OCP_USERNAME-sso-unsecured.$OCP_SUFFIX/auth/realms/3scaleRealm/protocol/openid-connect/token" \
  -H "Content-Type: application/x-www-form-urlencoded" \
  -d "username=user1" \
  -d "password=password" \
