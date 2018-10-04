@@ -80,7 +80,7 @@ source ~/.bashrc
 
 -----
 
-NOTE: Your userid for logging on to the OCP server.
+NOTE: Replace *userX* with your userid for logging on to the OCP server.
 
 == OpenShift Container Platform
 
@@ -115,7 +115,7 @@ kubernetes v1.9.1+a0ce1bc657
 -----
 
 .. In the above example, notice that version of the `oc` client is of the same release as the remote OCP master API.
-.. There a known subtle problems with using a version of the `oc` client that is different from your target OpenShift server.
+.. There are known subtle problems with using a version of the `oc` client that is different from your target OpenShift server.
 
 
 == View OpenShift Web Console
@@ -132,10 +132,11 @@ NOTE: If your web browser prompts about `connection privacy / security`, select 
 +
 .. Authenticate using the values of `userX` and `r3dh4t1!`
 +
-NOTE: Replace userX with your actual userid.
+NOTE: Replace *userX* with your actual userid.
 
 Notice that you are provided with access to the following OpenShift projects:
 
+. 3scale-mt-api0
 . api-lifecycle
 . rhdm
 . userX-gw
@@ -145,7 +146,7 @@ Notice that you are provided with access to the following OpenShift projects:
 
 image::images/ocp-projects-list.png[]
 
-NOTE: The first 2 projects: api-lifecycle & rhdm are global projects for which view access has been provided to you. The projects with your userId prefix are provisioned for your exclusive use.
+NOTE: The first 3 projects: 3scale-mt-api0, api-lifecycle & rhdm are global projects for which view access has been provided to you. The projects with your userId prefix are provisioned for your exclusive use.
 
 == Login to Applications
 
@@ -173,7 +174,7 @@ image::images/microcks-login-sso.png[]
 +
 image::images/microcks-login-sso-authorize.png[]
 
-. Provide additional account information. You can provide your personal details, or choose to provide dummy details. Click on *Submit* button.
+. Provide additional account information in the form with valid First name, Last name & email address. Click on *Submit* button.
 +
 image::images/microcks-login-sso-additional.png[]
 
@@ -211,7 +212,7 @@ image::images/apicurio-login-sso.png[]
 +
 image::images/apicurio-login-sso-authorize.png[]
 
-. Provide additional account information. You can provide your personal details, or choose to provide dummy details. Click on *Submit* button.
+. Provide additional account information in the form with valid First name, Last name & email address. Click on *Submit* button.
 +
 image::images/apicurio-login-sso-additional.png[]
 
@@ -219,10 +220,6 @@ image::images/apicurio-login-sso-additional.png[]
 +
 image::images/apicurio_home_page.png[]
 
-. You also need to open the following URLs in the same browser window (in different tabs) and accept the HTTPS certificate exception.
-+
-* https://apicurio-studio-ws.$OCP_SUFFIX
-* https://apicurio-studio-api.$OCP_SUFFIX
 
 
 Congratulations, your Apicurio application is set up correctly. Please keep this window open for use later in the lab.
@@ -236,7 +233,7 @@ An instance of Fuse Ignite has been deployed for your use. You will find a proje
 
 . In a browser, open the URL to Fuse Ignite: http://$OCP_USERNAME-fuse-ignite.$OCP_SUFFIX
 
-. You will be redirected to the Openshift login page.
+. You will be redirected to the Openshift login page. Login with your $OCP_USERNAME & $OCP_PASSWD.
 +
 image::images/apicurio-login-sso.png[]
 
@@ -303,7 +300,39 @@ You also need to open the following URLs in the same browser window (in differen
 
 Congratulations, your 3scale API Gateway is set up correctly. Please note your staging & production URLs as you will need it later in the labs.
 
+== Download Lab Assets
 
+You will need to download a few lab assets to your local laptop in order to complete the labs. Create a folder *rhte_lab* in your laptop copy the lab assets locally. In a browser, navigate to page: http://people.redhat.com/sjayanti/rhte_lab/
+
+You will notice 3 folders: _extensions_, _integration_ & _services_. 
+
+=== _extensions_
+
+The *extensions* folder consists of syndesis extensions that are necessary for the Fuse Online integration. Download the following extensions:
+
+. http://people.redhat.com/sjayanti/rhte_lab/extensions/syndesis-connector-datashape-1.0.0.jar
+. http://people.redhat.com/sjayanti/rhte_lab/extensions/syndesis-connector-webhook-1.0.0.jar
+. http://people.redhat.com/sjayanti/rhte_lab/extensions/syndesis-extension-manage-headers-1.0.0.jar
+. http://people.redhat.com/sjayanti/rhte_lab/extensions/syndesis-extension-script-1.0.0.jar
+. http://people.redhat.com/sjayanti/rhte_lab/extensions/syndesis-extension-setbodyjs-1.0.0.jar
+
+=== _integration_
+
+The *integration* folder consists of the syndeis integration to be used in the labs. Download the following integration:
+
+. http://people.redhat.com/sjayanti/rhte_lab/integration/InsuranceQuoting-export.zip
+
+=== _services_
+
+The *services* folder consists of the Swagger docs for the API services used in the labs. Please download the following service specs:
+
+. http://people.redhat.com/sjayanti/rhte_lab/services/Driver.json
+. http://people.redhat.com/sjayanti/rhte_lab/services/QuotingAPI.json
+. http://people.redhat.com/sjayanti/rhte_lab/services/RHDM-InsuranceQuoting.json
+. http://people.redhat.com/sjayanti/rhte_lab/services/quoteRequest.json
+
+
+Download all the assets into the *rhte_lab* folder. 
 
 == Congratulations!
 
