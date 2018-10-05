@@ -53,7 +53,7 @@ image::images/3scale-dev-portal-app-credentials.png[]
 . Select *Create Project.*
 . Enter "*quoting-app*" as the *Project Name*
 . Enter *"Quoting WebApp"* as the *Project Display Name.*
-. Enter the following paramteres:
+. Enter the following parameters:
 +
 .Parameters
 [options="header"]

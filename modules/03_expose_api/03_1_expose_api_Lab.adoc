@@ -169,6 +169,9 @@ NOTE: CORS policy has to be enabled in order to provide access to APIDocs
 
 . Click on *CORS* to expand the options.
 . Ensure the *allow_credentials* option is checked.
+. Add the following headers:
+.. authorized
+.. content-type
 +
 image::images/3scale-policy-cors.png[]
 
@@ -191,6 +194,11 @@ image::images/3scale-policy-cors.png[]
 . Correct the *host* property to match the Production URL of your API in 3scale: https://$OCP_USERNAME-quote-prod.$OCP_SUFFIX
 
 . Click on the *Create Service* button.
+
+. In a browser, try to access the URL https://$OCP_USERNAME-3scale-mt-api0.$OCP_SUFFIX/swagger/spec/quotes.json and ensure you can view the API doc for Quotes API.
++
+NOTE: This is the API Swagger documentation for the Integration API created in the previous lab. This Swagger doc will be used to create the Swagger client in the NodeJS client application to be created in the next lab.
+
 
 === User & Client Management
 
