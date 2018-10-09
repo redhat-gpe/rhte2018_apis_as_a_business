@@ -142,9 +142,12 @@ image::images/3scale-publishAppPlan.png[]
 
 . Set the *Verb* to *POST*
 
-. Set the *Pattern* to */webhook/QuoteAPI*
+. Set the *Pattern* to */webhook/QuoteAPI*.
+. Add the same pattern for verb *OPTIONS*.
 +
 image::images/3scale-quoteAPI.png[]
++
+NOTE: The OPTIONS request is sent by web clients to check the OAuth request headers accepted. Hence, a mapping rule has to be set up so that this response can be served by the 3scale APIcast Gateway.
 
 . Expand the *Authentication Settings* section.
 . Enter:
