@@ -281,7 +281,7 @@ Congratulations, your 3scale API Management Platform is set up correctly.  Pleas
 
 === Red Hat 3scale API Gateway
 
-You have been provisioned with a set of APIcast gateways in the project userX-gw. Here, you will have 2 gateways deployed: *stage-apicast* and *prod-apicast*.
+You have been provisioned with a set of APIcast gateways in the project *userX-gw*. Here, you will have 2 gateways deployed: *stage-apicast* and *prod-apicast*.
 
 Both the gateways have been configured to communicate with the backend URL for your 3scale tenant.
 
@@ -293,10 +293,6 @@ Notice that both the pods are running.
 
 image::images/ocp-userX-gw-all.png[]
 
-You also need to open the following URLs in the same browser window (in different tabs) and accept the HTTPS certificate exception.
-
-* https://$OCP_USERNAME-quote-stage.$OCP_SUFFIX
-* https://$OCP_USERNAME-quote-prod.$OCP_SUFFIX
 
 Congratulations, your 3scale API Gateway is set up correctly. Please note your staging & production URLs as you will need it later in the labs.
 

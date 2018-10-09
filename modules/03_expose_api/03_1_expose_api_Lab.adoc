@@ -102,7 +102,7 @@ Congratulations, your 3scaleRealm is set up.
 Now configure the Quote API as a managed service in 3scale.
 
 . Open the browser window where you logged in to Red Hat 3scale admin console.
-. Click on the *APIs* tab.
+. Click on the *API* tab.
 . Click on *Create Service*.
 . Enter the following values:
 .. *Name*: Quoting
@@ -173,7 +173,7 @@ NOTE: CORS policy has to be enabled in order to provide access to APIDocs
 . Click on *CORS* to expand the options.
 . Ensure the *allow_credentials* option is checked.
 . Add the following headers:
-.. authorized
+.. authorization
 .. content-type
 +
 image::images/3scale-policy-cors.png[]
@@ -185,7 +185,7 @@ image::images/3scale-policy-cors.png[]
 === Set up ActiveDocs 
 
 
-. Click on the *APIs* tab.
+. Click on the *API* tab.
 . Click on the *ActiveDocs* tab.
 . Click on *Create a new spec*.
 . Enter the following values:
