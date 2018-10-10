@@ -67,16 +67,19 @@ Clicking *Reset Workstation* will not stop or delete the lab environment.
 Once you've ssh'd into your remote terminal window, you'll want to set the following environment variables:
 
 -----
-#  Using the above variables, copy & paste the following in the same terminal #
+
+# PASTE THIS LINE SEPARATELY
 read -p "What is your user number? " user_num
-echo 'export LAB_CODE=a1011' >> ~/.bashrc
-echo 'export OCP_USERNAME=user${user_num}' >> ~/.bashrc
+# THEN DO THESE
+echo "export LAB_CODE=a1011" >> ~/.bashrc
+echo "export OCP_USERNAME=user${user_num}" >> ~/.bashrc
 echo 'export OCP_PASSWD=r3dh4t1!' >> ~/.bashrc
-echo 'export OCP_REGION=4452' >> ~/.bashrc
+echo "export OCP_REGION=8bb2" >> ~/.bashrc
 echo 'export OCP_DOMAIN=$OCP_REGION.rhte.opentlc.com' >> ~/.bashrc
 echo 'export OCP_SUFFIX=apps.$OCP_DOMAIN' >> ~/.bashrc
 
 source ~/.bashrc
+
 
 -----
 
