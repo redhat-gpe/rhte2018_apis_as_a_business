@@ -72,7 +72,7 @@ read -p "What is your user number? " user_num
 echo 'export LAB_CODE=a1011' >> ~/.bashrc
 echo 'export OCP_USERNAME=user${user_num}' >> ~/.bashrc
 echo 'export OCP_PASSWD=r3dh4t1!' >> ~/.bashrc
-echo 'export OCP_REGION=8bb2' >> ~/.bashrc
+echo 'export OCP_REGION=4452' >> ~/.bashrc
 echo 'export OCP_DOMAIN=$OCP_REGION.rhte.opentlc.com' >> ~/.bashrc
 echo 'export OCP_SUFFIX=apps.$OCP_DOMAIN' >> ~/.bashrc
 
@@ -285,7 +285,7 @@ Congratulations, your 3scale API Management Platform is set up correctly.  Pleas
 
 === Red Hat 3scale API Gateway
 
-You have been provisioned with a set of APIcast gateways in the project *userX-gw*. Here, you will have 2 gateways deployed: *stage-apicast* and *prod-apicast*.
+You have been provisioned with a set of APIcast gateways in the project *userX-gw* on Openshift. Navigate back to the OpenShift web console and select the *userX-gw* project. Here, you will have 2 gateways deployed: *stage-apicast* and *prod-apicast*.
 
 Both the gateways have been configured to communicate with the backend URL for your 3scale tenant.
 
@@ -333,6 +333,14 @@ The *services* folder consists of the Swagger docs for the API services used in 
 
 
 Download all the assets into the *rhte_lab* folder. 
+
+NOTE: A handy command to download all these files is to run the following command in the folder where you want to download the above files:
+
+----
+wget -r --no-parent http://people.redhat.com/sjayanti/rhte_lab
+
+
+----
 
 == Congratulations!
 
