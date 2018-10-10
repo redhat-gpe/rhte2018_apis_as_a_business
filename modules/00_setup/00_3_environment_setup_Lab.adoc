@@ -72,7 +72,7 @@ Once you've ssh'd into your remote terminal window, you'll want to set the follo
 echo "export LAB_CODE=a1011" >> ~/.bashrc
 echo "export OCP_USERNAME=userX" >> ~/.bashrc
 echo "export OCP_PASSWD=r3dh4t1!" >> ~/.bashrc
-echo "export OCP_REGION=a4d8" >> ~/.bashrc
+echo "export OCP_REGION=8bb2" >> ~/.bashrc
 echo "export OCP_DOMAIN=$OCP_REGION.rhte.opentlc.com" >> ~/.bashrc
 echo "export OCP_SUFFIX=apps.$OCP_DOMAIN" >> ~/.bashrc
 
@@ -267,7 +267,7 @@ Congratulations, your RH SSO is set up correctly.  Please keep this window open 
 
 === Red Hat 3scale
 
-A Red Hat 3scale API Platform multitenant deployment exists in the lab OCP cluster. A tenant for your use has been created. The admin portal for your tenant is accessible at the URL: https://$OCP_USERNAME-3scale-mt-api0-admin.$OCP_SUFFIX
+A Red Hat 3scale API Platform multitenant deployment exists in the lab OCP cluster. A tenant for your use has been created. The admin portal for your tenant is accessible at the URL: https://$OCP_USERNAME-3scale-mt-opentlc-mgr-admin.$OCP_SUFFIX
 
 . In a browser, navigate to the admin portal URL.
 . Accept the certificate exception.

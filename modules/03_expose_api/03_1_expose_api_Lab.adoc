@@ -198,7 +198,7 @@ image::images/3scale-policy-cors.png[]
 
 . Click on the *Create Service* button.
 
-. In a browser, try to access the URL https://$OCP_USERNAME-3scale-mt-api0.$OCP_SUFFIX/swagger/spec/quotes.json and ensure you can view the API doc for Quotes API.
+. In a browser, try to access the URL https://$OCP_USERNAME-3scale-mt-opentlc-mgr.$OCP_SUFFIX/swagger/spec/quotes.json and ensure you can view the API doc for Quotes API.
 +
 NOTE: This is the API Swagger documentation for the Integration API created in the previous lab. This Swagger doc will be used to create the Swagger client in the NodeJS client application to be created in the next lab.
 

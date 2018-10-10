@@ -78,8 +78,6 @@ Congratulations, your Mock service is running correctly.
 
 === Update Driver Service Swagger Spec
 
-IMPORTANT: The APICURIO studio requires a Web Socket connection to the service, which is NOT WORKING in the event Wifi. Hence, please skip the below lab and proceed to the next section. 
-
 . Open the browser tab where you logged in to *Apicurio Studio*.
 . Click on the** Import API** button.  
 . Enter the URL copied in the previous step.
