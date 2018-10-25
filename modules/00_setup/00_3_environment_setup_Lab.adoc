@@ -1,0 +1,357 @@
+
+:noaudio:
+:scrollbar:
+:data-uri:
+:toc2:
+:linkattrs:
+
+= Lab Setup
+
+.Prerequisites
+.. `ssh` utility installed on your laptop
+.. Web browser installed on your laptop
+.. broadband internet connectivity
+
+:numbered:
+
+== Overview
+
+This first lab orients you with the course lab assets provided to you.
+
+
+Your lab environment consists of the following:
+
+. *Remote Virtual Machine*
++
+Accessible via the ssh protocol.
+This is a client VM with the *oc* client and required tools pre-installed. You can use this remote VM to run the commands shown in the labs.
+
+. *OpenShift Master*
++
+Accessible via browser or *oc* command utility.
+This is the OpenShift Platform where the lab assets will be deployed.
+
+== Access Course VM via `GUID Grabber`
+
+This section of the lab explains how to access the Red Hat Tech Exchange _GuidGrabber_ in order to obtain a GUID.
+This GUID will be used to access the lab environment.
+
+. Begin by going to http://bit.ly/rhte-guidgrabber
++
+image::images/gg1_request.png[GuidGrabber Landing Page]
+
+. From this page select the *Lab Code* :  _A1011_
+
+. Enter the *Activation Key* provided by the lab instructor.
+
+. Click *Next*.
+
+. The resulting page will display your lab's GUID and other useful information about your lab environment.
++
+image::images/guidgrabber_response.png[Guid Grabber Information Page]
+
+. Your remote virtual machine is accessible via the `ssh` protocol.
++
+Follow the directions exactly as indicated in the Guid Grabber Information Page to ssh into your remote lab VM.
+
+. When you are completely done with your lab environment at the end of this course, please click *Reset Workstation* so that you can move on to the next lab.
+If you fail to do this, you will be locked into the GUID from the previous lab.
++
+[NOTE]
+Clicking *Reset Workstation* will not stop or delete the lab environment.
+
+
+
+== Environment Variables
+
+Once you've ssh'd into your remote terminal window, you'll want to set the following environment variables:
+
+-----
+
+# PASTE THIS LINE SEPARATELY
+read -p "What is your user number? " user_num
+# THEN DO THESE
+echo "export LAB_CODE=a1011" >> ~/.bashrc
+echo "export OCP_USERNAME=user${user_num}" >> ~/.bashrc
+echo 'export OCP_PASSWD=r3dh4t1!' >> ~/.bashrc
+echo "export OCP_REGION=8bb2" >> ~/.bashrc
+echo 'export OCP_DOMAIN=$OCP_REGION.rhte.opentlc.com' >> ~/.bashrc
+echo 'export OCP_SUFFIX=apps.$OCP_DOMAIN' >> ~/.bashrc
+
+source ~/.bashrc
+
+
+-----
+
+NOTE: Replace *userX* with your userid for logging on to the OCP server.
+
+== OpenShift Container Platform
+
+Your lab environment is built on Red Hat's OpenShift Container Platform.
+
+Access to your OCP resources can be gained via both the `oc` utility as well as the OCP web console.
+
+
+. Using the `oc` utility, log into OpenShift
++
+-----
+oc login https://master.$OCP_DOMAIN:443 -u $OCP_USERNAME -p $OCP_PASSWD
+-----
+
+. Ensure that your `oc` client is the same minor release version as the server:
++
+-----
+oc version
+-----
+
+* You should see:
++
+-----
+oc v3.9.40
+kubernetes v1.9.1+a0ce1bc657
+features: Basic-Auth GSSAPI Kerberos SPNEGO
+
+Server https://master.f72e.rhte.opentlc.com:443
+openshift v3.9.40
+kubernetes v1.9.1+a0ce1bc657
+
+-----
+
+.. In the above example, notice that version of the `oc` client is of the same release as the remote OCP master API.
+.. There are known subtle problems with using a version of the `oc` client that is different from your target OpenShift server.
+
+
+== View OpenShift Web Console
+
+. Log into OpenShift Web Console
+.. Many OpenShift related tasks found in this lab can be completed in the Web Console (as an alternative to using the `oc` utility).
+.. To access the OCP web console, point your browser to the output of the following:
++
+-----
+echo -en "\n\nhttps://master.$OCP_DOMAIN:443\n\n"
+-----
++
+NOTE: If your web browser prompts about `connection privacy / security`, select `Advanced` and continue.
++
+.. Authenticate using the values of `userX` and `r3dh4t1!`
++
+NOTE: Replace *userX* with your actual userid.
+
+Notice that you are provided with access to the following OpenShift projects:
+
+. 3scale-mt-api0
+. api-lifecycle
+. rhdm
+. userX-gw
+. userX-sso
+. userX-fuse-ignite
+. userX-client
+
+image::images/ocp-projects-list.png[]
+
+NOTE: The first 3 projects: 3scale-mt-api0, api-lifecycle & rhdm are global projects for which view access has been provided to you. The projects with your userId prefix are provisioned for your exclusive use.
+
+== Login to Applications
+
+You have been provided with the following applications pre-installed in the lab. Please follow the below steps to ensure you are able to access each of the applications correctly. This is essential in order to work on the labs.
+
+=== Microcks
+
+Microcks is an open-source communication and runtime tool for developing API service mocks. It helps you create API and Service contracts, write request/response, and create ready-to-use mocks which can be served from the microcks server.
+
+More information here: http://microcks.github.io
+
+A single instance of *Microcks* is installed in the OCP cluster. You can access the microcks URL by navigating to the following URL in the browser: http://microcks.$OCP_SUFFIX
+
+
+. Open the microcks URL in a browser. You should be redirected to the login page.
+. Click on *OpenShift v3* login.
++
+image::images/microcks-login-page.png[]
+
+. You will be redirected to the OpenShift login page. Provide your OCP_USERNAME and OCP_PASSWD to login.
++
+image::images/microcks-login-sso.png[]
+
+. On successful login, you need to Authorize Access to your profile for SSO. Click on *Allow Selected Permissions*.
++
+image::images/microcks-login-sso-authorize.png[]
+
+. Provide additional account information in the form with valid First name, Last name & email address. Click on *Submit* button.
++
+image::images/microcks-login-sso-additional.png[]
+
+. Now you should get redirected to the home page of Microcks. Click on *Services*.
++
+image::images/microcks_home_page.png[]
+
+. You should see a service called *Driver Service* configured. 
++
+image::images/microcks-driver-service.png[]
+
+Congratulations, your Microcks application is set up correctly. Please keep this window open for use later in the lab.
+
+
+=== Apicurio
+
+Apicurio studio is an opensource standalone API design studio that can be used to create new or edit existing API designs (using the OpenAPI specification).
+
+More Information here: https://github.com/Apicurio/apicurio-studio
+
+
+A single instance of *Apicurio* is installed in the OCP cluster. You can access the apicurio URL by navigating to the following URL in the browser: https://apicurio-studio.$OCP_SUFFIX
+
+
+. Open the apicurio URL in a browser. You should be redirected to the login page.
+. Click on *OpenShift v3* login.
++
+image::images/apicurio-login-page.png[]
+
+. You will be redirected to the OpenShift login page. Provide your OCP_USERNAME and OCP_PASSWD to login.
++
+image::images/apicurio-login-sso.png[]
+
+. On successful login, you need to Authorize Access to your profile for SSO. Click on *Allow Selected Permissions*.
++
+image::images/apicurio-login-sso-authorize.png[]
+
+. Provide additional account information in the form with valid First name, Last name & email address. Click on *Submit* button.
++
+image::images/apicurio-login-sso-additional.png[]
+
+. Now you should get redirected to the home page of Apicurio Studio. 
++
+image::images/apicurio_home_page.png[]
+
+Open the following URLs of the Apicurio api & web service endpoints and accept the security certificate exceptions:
+
+* https://apicurio-studio-ws.$OCP_SUFFIX
+
+* https://apicurio-studio-api.$OCP_SUFFIX
+
+Congratulations, your Apicurio application is set up correctly. Please keep this window open for use later in the lab.
+
+
+=== Fuse Ignite
+
+Fuse Ignite is part of the Red Hat Fuse 7 release, and is targeted towards citizen developers. Ignite provides a web browser interface that lets you integrate two or more different applications or services without writing code.
+
+An instance of Fuse Ignite has been deployed for your use. You will find a project called *userX-fuse-ignite* wherein your Fuse Ignite is deployed.
+
+. In a browser, open the URL to Fuse Ignite: http://$OCP_USERNAME-fuse-ignite.$OCP_SUFFIX
+
+. You will be redirected to the Openshift login page. Login with your $OCP_USERNAME & $OCP_PASSWD.
++
+image::images/apicurio-login-sso.png[]
+
+. On successful login, you need to Authorize Access to your profile for SSO. Click on *Allow Selected Permissions*.
+
+. You should now be redirected to the Fuse Ignite home page.
++
+image::images/fuse-ignite-homepage.png[]
+
+Congratulations, your Fuse Ignite is set up correctly. Please keep this window open for use later in the lab.
+
+
+=== Red Hat Single Sign On
+
+You have been provided with an ephemeral instance of Red Hat Single Sign On (RH SSO) in order to enable you to use Open ID Connect (OIDC) integration with 3scale API Platform.
+
+The RH SSO is deployed in the namespace *userX-sso*. 
+
+. In a browser, open the secure URL to RH SSO: https://$OCP_USERNAME-sso.$OCP_SUFFIX
+. Click on *Administration console*.
+. Login with userid *admin* and password *password*.
+. You should see the default realm *3scaleRealm* configured.
+. Navigate to *Login* tab and select *none* for *Require SSL*. Click on *save*.
++
+image::images/rhsso_3scale_ssl_disable.png[]
+
+. Repeat the above step for the *Master* realm.
+
+Congratulations, your RH SSO is set up correctly.  Please keep this window open for use later in the lab.
+
+
+=== Red Hat 3scale
+
+A Red Hat 3scale API Platform multitenant deployment exists in the lab OCP cluster. A tenant for your use has been created. The admin portal for your tenant is accessible at the URL: https://$OCP_USERNAME-3scale-mt-opentlc-mgr-admin.$OCP_SUFFIX
+
+. In a browser, navigate to the admin portal URL.
+. Accept the certificate exception.
+. Login with your OCP_USERNAME and OCP_PASSWD.
+. You should be redirected to the 3scale admin dashboard:
++
+image::images/3scale-admin-dashboard.png[]
+
+Congratulations, your 3scale API Management Platform is set up correctly.  Please keep this window open for use later in the lab.
+
+
+=== Red Hat 3scale API Gateway
+
+You have been provisioned with a set of APIcast gateways in the project *userX-gw* on Openshift. Navigate back to the OpenShift web console and select the *userX-gw* project. Here, you will have 2 gateways deployed: *stage-apicast* and *prod-apicast*.
+
+Both the gateways have been configured to communicate with the backend URL for your 3scale tenant.
+
+image::images/ocp-userX-gw-dc.png[]
+
+A route for each gateway is set up. The routes for Staging & Production are https://${OCP_USERNAME}-quote-stage.$OCP_SUFFIX and https://$OCP_USERNAME-quote-prod.$OCP_SUFFIX respectively.
+
+Notice that both the pods are running.
+
+image::images/ocp-userX-gw-all.png[]
+
+
+Congratulations, your 3scale API Gateway is set up correctly. Please note your staging & production URLs as you will need it later in the labs.
+
+== Download Lab Assets
+
+You will need to download a few lab assets to your local laptop in order to complete the labs. Create a folder *rhte_lab* in your laptop copy the lab assets locally. In a browser, navigate to page: http://people.redhat.com/sjayanti/rhte_lab/
+
+You will notice 3 folders: _extensions_, _integration_ & _services_. 
+
+=== _extensions_
+
+The *extensions* folder consists of syndesis extensions that are necessary for the Fuse Online integration. Download the following extensions:
+
+. http://people.redhat.com/sjayanti/rhte_lab/extensions/syndesis-connector-datashape-1.0.0.jar
+. http://people.redhat.com/sjayanti/rhte_lab/extensions/syndesis-connector-webhook-1.0.0.jar
+. http://people.redhat.com/sjayanti/rhte_lab/extensions/syndesis-extension-manage-headers-1.0.0.jar
+. http://people.redhat.com/sjayanti/rhte_lab/extensions/syndesis-extension-script-1.0.0.jar
+. http://people.redhat.com/sjayanti/rhte_lab/extensions/syndesis-extension-setbodyjs-1.0.0.jar
+
+=== _integration_
+
+The *integration* folder consists of the syndeis integration to be used in the labs. Download the following integration:
+
+. http://people.redhat.com/sjayanti/rhte_lab/integration/InsuranceQuoting-export.zip
+
+=== _services_
+
+The *services* folder consists of the Swagger docs for the API services used in the labs. Please download the following service specs:
+
+. http://people.redhat.com/sjayanti/rhte_lab/services/Driver.json
+. http://people.redhat.com/sjayanti/rhte_lab/services/QuotingAPI.json
+. http://people.redhat.com/sjayanti/rhte_lab/services/RHDM-InsuranceQuoting.json
+. http://people.redhat.com/sjayanti/rhte_lab/services/quoteRequest.json
+
+
+Download all the assets into the *rhte_lab* folder. 
+
+NOTE: A handy command to download all these files is to run the following command in the folder where you want to download the above files:
+
+----
+wget -r --no-parent http://people.redhat.com/sjayanti/rhte_lab
+
+
+----
+
+== Congratulations!
+
+In this lab you successfully completed the intial set up. You have verified that all the required applications are setup and working correctly for your account. You are now ready to work on the business use case of the lab.
+
+IMPORTANT: If you are unable to access any of the above applications, please consult your instructor. Please do not try to proceed with the labs until all the applications are set up correctly.
+
+Proceed to the next lab.
+
+
+

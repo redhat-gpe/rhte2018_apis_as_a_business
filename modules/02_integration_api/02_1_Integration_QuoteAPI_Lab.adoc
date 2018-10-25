@@ -1,0 +1,205 @@
+
+:noaudio:
+:scrollbar:
+:data-uri:
+:toc2:
+:linkattrs:
+
+== Introduction
+
+In this lab, you will create the Integration flow to orchestrate the 2 backend services, and expose a composite REST QuoteAPI service.
+
+image::images/api-usecase-hld-lab2.png[]
+
+.Goals
+* Import the integration to Syndesis.
+* Import Syndesis extensions.
+* Configure API connectors
+* Deploy the Syndesis Integration
+* Test the QuoteAPI Service
+
+== Import the Syndesis Integration
+
+An integration export schema is provided in the lab assets to help you get started with the integration. Follow the below steps to import the integration:
+
+. Open the Fuse Online (Syndesis) web console on the browser.
+. Click on *Integrations*.
+. Click on *Import* button.
++
+image::images/ignite-importIntegration.png[]
+
+. Click on *Choose File* and choose the *InsuranceQuoting-export.zip* file.
+. Check that the integration is imported correctly:
++
+image::images/ignite-importIntegration-success.png[]
+
+. Click on *Done*.
+. You can see the Integration listed in the Integrations home page:
++
+image::images/ignite-importIntegration-list.png[]
++
+NOTE: Note that the Integration has a warning *Configuration Required*. Before the integration can be deployed, the extensions & connections need to be configured.
+
+== Syndesis Configuration - Extensions
+
+There are certain extensions that are required to be installed in Syndesis in order to enable certain features required for the lab. These are:
+
+. *Webhook* - This extension provides a connector that allows to expose a HTTP endpoint in order to receive triggers from external platforms.
+. *Datashape* - to specify input and output data shapes in the exchange.
+. *SetBodyJS* - to set the body of the exchange using `javadcript`.
+. *ManageHeaders* - to set the or remove an header of the exchange.
+. *Script* - to add dynamic scripting to Syndesis using either `groovy` or `javascript`.
+
+
+=== Import Extensions
+
+. Open the Fuse Ignite (Syndesis) web console on the browser.
+. Click on *Customizations*.
+. Click on the *Extensions* tab.
+. Notice that 3 extension definitions are imported as part of the Integration.
+
+. Click on the *Import Extension* button.
++
+image::images/ignite-Extensions.png[]
+
+. Select the *fuse-ignite/extensions/syndesis-extension-datashape-1.0.0.jar* file.
+. Click on the *Import Extension* button.
++
+image::images/ignite-ImportExtension.png[]
+
+. Repeat these steps for the following extensions:
+.. syndesis-connector-webhook-1.0.0.jar
+
+. Now update the following 3 extensions with the downloaded extension jar files:
+.. syndesis-connector-datashape-1.0.0.jar
+.. syndesis-extension-script-1.0.0.jar
+.. syndesis-extension-manage-headers-1.0.0.jar
+
+. You should see all 5 estensions imported successfully.
++
+image::images/ignite-ImportedExtensions.png[]
+
+Congratulations, the syndesis extensions are now imported successfully.
+
+== Syndesis Configuration - Connectors
+
+. There would be 2 API connectors imported from the integration.
++
+image::images/ignite-connector-import.png[]
+
+. Click on *Driver* API and ensure the details are as below:
++
+.Parameters
+[options="header"]
+|=======================
+| Parameter | Value 
+| *Host* | http://microcks.api-lifecycle.svc.cluster.local:8080
+| *Base URL* | /dynarest/Driver%20Service/1.0/ 
+|=======================
++
+image::images/ignite-CreateAPIConnectorDriver2.png[]
+
+. If any of the details are incorrect, click on *edit* and save the changes.
+
+. Click on the *Insurance Quoting* API, and ensure the details are as provided below:
++
+.Parameters
+[options="header"]
+|=======================
+| Parameter | Value 
+| *Host* | http://quoting-kieserver.rhdm.svc.cluster.local:8080
+| *Base URL* | /services/rest 
+|=======================
+
+. If any of the details are incorrect, click on *edit* and save the changes.
++
+image::images/ignite-CreateAPIConnectionRHDM2.png[]
+
+. Now click on *Connections* button and notice the *RHDM-InsuranceQuoting* connection shows a *Configuration Required* warning.
++
+image::images/ignite-connection-list.png[]
+
+. Click on *RHDM-InsuranceQuoting* connection.
+. Click on *Edit*.
+. Edit the *Username* to *user*, and *Password* to *password*.
++
+image::images/ignite-connection-rhdm-edit.png[]
+
+. Click on *Save*.
+
+Congratulations, the API connectors for both backend services are now set up correctly in Syndesis. 
+
+
+== Syndesis Integration
+
+The Integration on Syndesis consists of the following steps:
+
+* *WebHook Connector* - Starting point of Integration, to expose a HTTP POST endpoint. Will receive a Quote Request JSON object.
+* *setBodyJS* - To extract the *id* of the request.
+* *Set Header* - To set the header *Connection: close* so that the HTTP connection to Driver API is closed.
+* *Driver API* - External request to Driver Service mock API to get the Driver validation details.
+* *DataMapper* - To map the response message to the Request for the Insurance Quote Calculation Service.
+* *Script* - To set the required HTTP headers and JSON object for the Insurance Quote calculation Service.
+* *RHDMInsuranceQuoting* - External request to Insurance Quote Calculation service to get the price quote for the driver.
+* *DataMapper* - To map the response message to the Quote response object.
+* *DataShape Connector* - Finish connector, for returning the Quote Response JSON object data shape. 
+
+The Integration design is as below:
+
+image::images/rhte_BAPI_flow.png[]
+
+. Click on the *Integration* link, and select *InsuranceQuoting* integration.
++
+image::images/ignite-integration-summary-1.png[]
+
+. Click on *Edit Integration* button.
+
+. You should be able to see the steps in the Integration. You can click on the individual steps and inspect the integration.
+
+. Click on the *Publish* button.
+
+. Wait for the integration to be deployed (~5min).
+
+. In the terminal where you logged in to OCP, execute the following commands:
++
+-----
+oc project $OCP_USERNAME-fuse-ignite
+oc expose dc i-insurancequoting --port 8080
+oc expose service i-insurancequoting
+-----
+
+. Find out the route exposed for your integration:
++
+----
+oc get route | grep insurancequoting
+
+----
++
+NOTE: The route will be of the format: http://i-insurancequoting-$OCP_USERNAME-fuse-ignite.$OCP_SUFFIX
+
+=== Test the Integration Route
+
+. You can test if your integration route is working correctly 
+. Send a curl request as below:
++
+----
+ curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/json' -d '{"driver": {"age":20, "firstName": "Pablo", "lastName": "Szuster", "validLicense": true, "driverID": 12345, "id": "5b89722a368c02000199a1e3", "fines":0},  "vehicle": {"maker": "Chevrolet", "model": "Cruze","modelYear": 2017, "mileage": 5000,"licensePlate": "ABC123"}  }' 'http://i-insurancequoting-$OCP_USERNAME-fuse-ignite.$OCP_SUFFIX/webhook/QuoteAPI'
+
+----
++
+NOTE: Provide a valid *id* of the resource that you have created for your Mock *Driver Service*.
+
+. If your integration route is working correctly, you should see a response as below:
++
+----
+{"price": 1100}
+----
+
+. You can see the log of your route and any errors in the Syndesis Integration Page. Click on the *Activity* tab.
++
+image::images/ignite-integration-analytics.png[]
+
+IMPORTANT: If the integration reports any errors, fix it and retest. 
+
+Congratulations, your Integration Quote API is now set up. Proceed to the next lab.
+

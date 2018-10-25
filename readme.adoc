@@ -3,11 +3,62 @@
 == Related session(s) at RHT Tech Exchange
 
 . Agile Integration Implementation
+
 .. Description
 
- This session will talk about how Red Hat’s OpenShift, Fuse and 3scale technologies combine to deliver on the vision. The content will cover how containerized workloads can be converted into APIs and easily integrated into new types of applications. We will also provide information on automation and how deployments can be architected for large scale deployment. 
-.. Duration:  1 hour
-.. Speakers:  TBD
+
+This session will talk about how Red Hat’s OpenShift, Fuse and 3scale technologies combine to deliver on the vision. The content will cover how containerized workloads can be converted into APIs and easily integrated into new types of applications. We will also provide information on automation and how deployments can be architected for large scale deployment. 
+
+.. Duration:  2 hours
+.. Speaker:  Satya Jayanti
+.. Lab co-author: Pablo Szuster
+
+== Business Use case
+
+
+=== Problem Statement
+
+Agile Integration scenario where a Fuse Ignite route is used to provide orchestration of 2 backend services, and expose a composite REST API on 3scale. This API is then secured with OAuth2 & OIDC using Red Hat Single Sign On (SSO) server.
+
+Two parts:
+
+==== Backend:
+
+2 backend APIs in Insurance domain:
+- One API for Insurance Quote calculation (REST API using Decision Manager)
+- One API for Driver  Verification (mock service)
+
+1 composite API on Fuse Ignite:
+. Expose a REST API getting a Quote Request, enrich the request with Driver Verification details, and generate an Insurance Quote response.
+
+API Managed through 3scale:
+. Expose the Fuse Ignite API as a 3scale service secured with Rh SSO & OIDC.
+
+==== Frontend:
+
+NodeJS application providing simple User interface with an application form for requesting the quote, and showing the response. The NodeJS app calls the Quote API through the 3scale API gateway, & gets the response.
+
+=== Design
+
+==== API Provider
+
+Use Apicurio, Microcks, Fuse Ignite 3scale & SSO.
+
+
+. Driving Service: https://github.com/gpe-mw-training/rhte-api-as-business-labs/blob/master/services/Driver.json
+. Insurance Quote Rules Service: https://github.com/gpe-mw-training/rhte-api-as-business-labs/blob/master/services/RHDM-InsuranceQuoting.json
+. Fuse Ignite Quote Service: https://github.com/gpe-mw-training/rhte-api-as-business-labs/blob/master/services/QuotingAPI.json
+
+==== API Consumer
+
+Provide NodeJS client application that sends a message to Camel running on Fuse Online. The message kicks off the camel route, which integrates 2 backend API services running on 3scale and provides the response to the client application.
+
+. NodeJS Application: https://github.com/gpe-mw-training/rhte-api-as-business-labs/tree/master/services/InsuranceQuoting
+. Fuse Ignite API: Created as part of the lab.
+. 3scale configuration: Created as part of the lab.
+. SSO configuration: Created as part of the lab.
+
+
 
 == Infrastructure
 
@@ -25,5 +76,13 @@ https://etherpad.net/p/RHTE-APIs-a-Biz
 .. nodejs :     insurance quote frontend
 .. Fuse Online  (using its existing AMQ broker )
 
-. Optional:   1 central Gogs
+
+
+
+== References
+
+. https://developers.redhat.com/blog/2018/04/11/api-journey-idea-deployment-agile-part1/
+. https://apicurio-studio.readme.io/docs/getting-started
+. http://microcks.github.io/
+. https://access.redhat.com/documentation/en-us/red_hat_3scale/2.2/html/developer_portal/authentication#enabling_and_disabling_authentication_via_red_hat_single_sign_on
 
