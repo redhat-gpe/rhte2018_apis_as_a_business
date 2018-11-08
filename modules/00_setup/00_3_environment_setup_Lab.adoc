@@ -270,7 +270,7 @@ Congratulations, your RH SSO is set up correctly.  Please keep this window open 
 
 === Red Hat 3scale
 
-A Red Hat 3scale API Platform multitenant deployment exists in the lab OCP cluster. A tenant for your use has been created. The admin portal for your tenant is accessible at the URL: https://$OCP_USERNAME-3scale-mt-opentlc-mgr-admin.$OCP_SUFFIX
+A Red Hat 3scale API Platform multitenant deployment exists in the lab OCP cluster. A tenant for your use has been created. The admin portal for your tenant is accessible at the URL: https://$OCP_USERNAME-3scale-mt-api0-admin.$OCP_SUFFIX
 
 . In a browser, navigate to the admin portal URL.
 . Accept the certificate exception.
