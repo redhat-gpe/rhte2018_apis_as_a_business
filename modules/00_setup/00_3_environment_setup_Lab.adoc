@@ -74,8 +74,8 @@ read -p "What is your user number? " user_num
 echo "export LAB_CODE=a1011" >> ~/.bashrc
 echo "export OCP_USERNAME=user${user_num}" >> ~/.bashrc
 echo 'export OCP_PASSWD=r3dh4t1!' >> ~/.bashrc
-echo "export OCP_REGION=8bb2" >> ~/.bashrc
-echo 'export OCP_DOMAIN=$OCP_REGION.rhte.opentlc.com' >> ~/.bashrc
+echo "export OCP_REGION=81e9" >> ~/.bashrc
+echo 'export OCP_DOMAIN=$OCP_REGION.openshift.opentlc.com' >> ~/.bashrc
 echo 'export OCP_SUFFIX=apps.$OCP_DOMAIN' >> ~/.bashrc
 
 source ~/.bashrc
@@ -111,7 +111,7 @@ oc v3.9.40
 kubernetes v1.9.1+a0ce1bc657
 features: Basic-Auth GSSAPI Kerberos SPNEGO
 
-Server https://master.f72e.rhte.opentlc.com:443
+Server https://master.81e9.openshift.opentlc.com:443
 openshift v3.9.40
 kubernetes v1.9.1+a0ce1bc657
 

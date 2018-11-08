@@ -201,5 +201,187 @@ image::images/ignite-integration-analytics.png[]
 
 IMPORTANT: If the integration reports any errors, fix it and retest. 
 
+== Bonus: Integration Instructions
+
+=== Create the Integration
+
+ . Click on the *Integrations* tab.
+. Click on the *Create Integration* button.
+. Select *Webhook* as the *Start Connection*.
++
+image::images/ignite-IntegrationWebhook.png[]
+
+ . Select the only available action.
+ . Change the *Webhook Token* to *QuoteAPI*.
+ . Click on the *Next button.*
++
+image::images/ignite-CreateWebHookToken.png[]
+
+ . Select *JSON Instance* as *Type.*
+ . Paste the contents of the *Labs\quoteRequest.json* file into the *Definition* field.
+ . Enter *QuoteRequest* as *Data Type Name*.
+ . Click on the *Done* button.
++
+image::images/ignite-DefineWebhookDatashape.png[]
+
+ . Select *DataShape* as the *Finish* *Connection*.
+ . Select the only available action.
+ . Select *JSON Instance* as *Type.*
+ . Enter the following in the *Definition* field:
++
+-----
+{ "price": 123 }
+-----
+
+ . Enter *QuoteResponse* as *Data Type Name*.
+
+ . Hover over the *plus* sign and click on *Add a Step*.
+. Select *Set Body JS.*
+. Enter the following as *Body:*
++
+-----
+'{"parameters":{"id": "' + JSON.parse(exchange.in.getBody(java.lang.String.class)).driver.id + '"}}'
+-----
+
+ . Click on the *Done* button.
++
+image::images/ignite-Integration-SetBodyJS.png[]
+
+ . Click on the *Add a step* after the *Set Body JS* step.
+. Select *Set Header*.
+. Add the following values:
+.. *Header name:* Connection
+.. *Header value:* close
++
+image::images/ignite-integration-setHeader.png[]
+
+ . Click on *Add a connection*.
+. Select *Driver API*.
+. Select *Retrieve a Driver resource.*
++
+image::images/ignite-Integration-DriverAPI.png[]
+
+ . Add a connection after *Driver API*.
+ . Select *RHDM-InsuranceQuoting.*
+ . Select the only available action.
+ . Click on orange circle with a warning icon inside on the top of the *RHDM-InsuranceQuoting* connection.
+ . Click on the *Add a data mapping step* link.
++
+image::images/ignite-Integration-RHDMDataMapping.png[]
+
+ . Create the following constants:
++
+.Constants
+[options="header"]
+|=======================
+| Value | Type 
+| quoting | String 
+| quote1 | String 
+| 0 | Integer 
+| true | Boolean 
+| ksession | String 
+|=======================
+
+ . Perform the following mappings:
++
+.Mappings
+[options="header"]
+|=======================
+| Source | Target 
+| Contants -&gt; quoting | parameters -&gt; id 
+| Contants -&gt; ksession | body -&gt; lookup 
+| Contants -&gt; quote1 | body -&gt; commands -&gt; insert -&gt; out-identifier 
+| Contants -&gt; true | body -&gt; commands -&gt; insert -&gt; return-object 
+| Contants -&gt; 0 | body -&gt; commands -&gt; insert -&gt; object -&gt; com.redhat.insurancequoting.Quote -&gt; price     
+|=======================
+
+ . It should look like this:
++
+image::images/ignite-integration-RHDMDataMapper.png[]
+
+ . Perform the following mappings:
++
+.Mappings
+[options="header"]
+|=======================
+| Source | Target 
+| QuoteRequest -&gt; driver -&gt; age | body -&gt; commands -&gt; insert -&gt; object -&gt; com.redhat.insurancequoting.Quote -&gt; driver -&gt; age 
+| QuoteRequest -&gt; driver -&gt; firstName | body -&gt; commands -&gt; insert -&gt; object -&gt; com.redhat.insurancequoting.Quote -&gt; driver -&gt; firstName 
+| QuoteRequest -&gt; driver -&gt; lastName | body -&gt; commands -&gt; insert -&gt; object -&gt; com.redhat.insurancequoting.Quote -&gt; driver -&gt; lastName 
+| QuoteRequest -&gt; driver -&gt; validLicense | body -&gt; commands -&gt; insert -&gt; object -&gt; com.redhat.insurancequoting.Quote -&gt; driver -&gt; validLicense 
+| QuoteRequest -&gt; vehicle -&gt; licensePlate | body -&gt; commands -&gt; insert -&gt; object -&gt; com.redhat.insurancequoting.Quote -&gt; vehicle -&gt; licensePlate 
+| QuoteRequest -&gt; vehicle -&gt; maker | body -&gt; commands -&gt; insert -&gt; object -&gt; com.redhat.insurancequoting.Quote -&gt; vehicle -&gt; maker 
+| QuoteRequest -&gt; vehicle -&gt; mileage | body -&gt; commands -&gt; insert -&gt; object -&gt; com.redhat.insurancequoting.Quote -&gt; vehicle -&gt; mileage 
+| QuoteRequest -&gt; vehicle -&gt; model | body -&gt; commands -&gt; insert -&gt; object -&gt; com.redhat.insurancequoting.Quote -&gt; vehicle -&gt; model 
+| QuoteRequest -&gt; vehicle -&gt; modelYear | body -&gt; commands -&gt; insert -&gt; object -&gt; com.redhat.insurancequoting.Quote -&gt; vehicle -&gt; modelYear 
+| Response -&gt; fines | body -&gt; commands -&gt; insert -&gt; object -&gt; com.redhat.insurancequoting.Quote -&gt; driver -&gt; fines 
+|=======================
+
+ . Click on the *Done* button.
++
+image::images/ignite-Integration-RHDMDataMapping2.png[]
+
+ . Click on orange circle with a warning icon inside on the top of the *DataShape* connection.
+ . Click on the *Add a data mapping step* link.
++
+image::images/ignite-Integration-DataShapeDataMapping1.png[]
+
+ . Perform the following mapping:  
++
+.Mappings
+[options="header"]
+|=======================
+  | Source | Target     
+  | Response -&gt; result -&gt; execution-results -&gt; results -&gt; value -&gt; com.redhat.insurancequoting.Quote -&gt; price | QuoteResponse -&gt; price 
+|=======================
+
+ . Click on the *Done* button.
++
+image::images/ignite-IntegrationDataShapeDataMapping3.png[]
+
+ . Add a step *before* the *RHDM-InsuranceQuoting* connection.
++
+image::images/ignite-IntegrationAddRemoveHeaderStep.png[]
+
+ . Select *Script*.
+ . Select *Javascript* as the *Language*.
+ . Enter the following code as *Script:*
++
+-----
+var obj = JSON.parse(body);
+var fire = {"fire-all-rules": {}};
+obj.body.commands.push(fire);
+exchange.out.headers['Content-Type'] = 'application/json';
+exchange.out.headers['Accept'] = 'application/json';
+exchange.out.body =JSON.stringify(obj);
+-----
+ . Click on the *Done* button.
+ * Your Integration should look like this:
++
+image::images/ignite-integration-summary.png[]
+
+. Click on the *Publish* button.
+
+. Wait for the integration to be deployed (~5min).
+
+. In the terminal where you logged in to OCP, execute the following commands:
++
+-----
+oc project $OCP_USERNAME-fuse-ignite
+oc expose dc i-insurancequoting --port 8080
+oc expose service i-insurancequoting
+-----
+
+. Find out the route exposed for your integration:
++
+----
+oc get route | grep insurancequoting
+
+----
++
+NOTE: The route will be of the format: http://i-insurancequoting-$OCP_USERNAME-fuse-ignite.$OCP_SUFFIX
+
+Now you can proceed with *Testing the Integration*.
+
 Congratulations, your Integration Quote API is now set up. Proceed to the next lab.
 
