@@ -199,7 +199,7 @@ Apicurio studio is an opensource standalone API design studio that can be used t
 More Information here: https://github.com/Apicurio/apicurio-studio
 
 
-A single instance of *Apicurio* is installed in the OCP cluster. You can access the apicurio URL by navigating to the following URL in the browser: https://apicurio-studio.$OCP_SUFFIX
+A single instance of *Apicurio* is installed in the OCP cluster. You can access the apicurio URL by navigating to the following URL in the browser: http://apicurio-studio.$OCP_SUFFIX
 
 
 . Open the apicurio URL in a browser. You should be redirected to the login page.
@@ -223,11 +223,7 @@ image::images/apicurio-login-sso-additional.png[]
 +
 image::images/apicurio_home_page.png[]
 
-Open the following URLs of the Apicurio api & web service endpoints and accept the security certificate exceptions:
 
-* https://apicurio-studio-ws.$OCP_SUFFIX
-
-* https://apicurio-studio-api.$OCP_SUFFIX
 
 Congratulations, your Apicurio application is set up correctly. Please keep this window open for use later in the lab.
 

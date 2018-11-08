@@ -49,12 +49,16 @@ image::images/api-usecase-hld.jpeg[]
 
 === API Provider
 
-Use Apicurio, Microcks, Fuse Ignite 3scale & SSO.
+Use Apicurio, Microcks, Fuse Ignite, 3scale & SSO.
 
+The following are the schema for the services exposed or accessed by the provider:
 
-. Driving Service: https://github.com/gpe-mw-training/rhte-api-as-business-labs/blob/master/services/Driver.json
-. Insurance Quote Rules Service: https://github.com/gpe-mw-training/rhte-api-as-business-labs/blob/master/services/RHDM-InsuranceQuoting.json
-. Fuse Ignite Quote Service: https://github.com/gpe-mw-training/rhte-api-as-business-labs/blob/master/services/QuotingAPI.json
+. *Driving Service*: https://github.com/gpe-mw-training/rhte-api-as-business-labs/blob/master/services/Driver.json
+. *Insurance Quote Rules Service*: https://github.com/gpe-mw-training/rhte-api-as-business-labs/blob/master/services/RHDM-InsuranceQuoting.json
+. *Fuse Ignite Quote Service*: https://github.com/gpe-mw-training/rhte-api-as-business-labs/blob/master/services/QuotingAPI.json
+
+In addition, the following products are used for access control & authorization:
+
 . 3scale API Management Platform - for API access control
 . Red Hat SSO : For Open ID Connect authorization of the consumer accounts.
 

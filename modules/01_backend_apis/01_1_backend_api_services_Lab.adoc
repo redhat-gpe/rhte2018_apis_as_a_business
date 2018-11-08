@@ -90,7 +90,7 @@ image::images/apicurio-importAPI.png[]
 +
 image::images/apicurio-editAPI.png[]
 
-* Click on the **Add** button in the **Definitions **section**.**
+* Click on the **Add** button in the **Data Types **section**.**
 
 * Enter **Driver** and click on the **Add** button.
 +
